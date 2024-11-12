@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"externalConsole": false,
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "运行当前文件",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${file}",
+			"console": "integratedTerminal"
+		}
+	]
+}

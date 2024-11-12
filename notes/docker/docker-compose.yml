@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  # Node.js 应用服务
+  node_app:
+    image: node_app:latest               # 指定 Node.js 镜像名称和标签
+    container_name: node_compose         # 指定容器的名称
+    ports:
+      - "1000:666"                       # 将主机端口映射到容器端口
+    volumes:
+      - ./node/app/:/app/                # 挂载主机目录到容器目录
+    build:
+      context: .                          # 使用当前目录作为上下文
+      dockerfile: ./node/Dockerfile      # 指定 Dockerfile 路径
+
+  # MySQL 服务
+  mysql_app:
+    image: mysql:latest              # 指定 MySQL 镜像名称和标签
+    container_name: mysql_compose        # 指定容器的名称
+    ports:
+      - "1006:3306"                      # 将主机端口映射到容器端口
+    environment:
+      MYSQL_ROOT_PASSWORD: "000000"    # 设置 MySQL root 用户密码
+    volumes:
+      - ./mysql/mysql_docker_database:/var/lib/mysql/  # 挂载主机目录到容器目录
+# 定义卷
+volumes:
+  mysql_data:                             # 定义名为 mysql_data 的卷

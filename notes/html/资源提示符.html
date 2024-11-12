@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head></head>
+	<!--预加载，让浏览器提前加载指定资源(加载后并不执行) ，需要执行时再执行,优先级高-->
+	<link rel="preload" as="script" href="./index.js">
+	<!-- 告诉浏览器，这个资源将会在未来的某个时刻用到，浏览器会在空闲时下载它 -->
+	<link rel="prefetch" href="demo.html">
+	<body>
+		async defer 只适用于外部脚本文件（使用 src 属性引入的脚本）
+		<script src="./index.js" async></script>
+		<!-- async --不会阻止DOM解析，会在下载完成后立即执行js文件。-->
+		<script src="./index.js" async></script>
+		<!-- defer 也不会阻止DOM解析，但是会在DOM解析完后才会执行，在DOMContentLoaded事件调用前执行。-->
+		<script src="./index.js" defer></script>
+		<!--type为module时,默认为defer。-->
+		<script src="./index.js" type="module"></script>
+		<script>
+			//通过脚本动态创建的script标签默认async属性为true
+			let script=document.createElement('script')
+		</script>
+	</body>
+
+</html>

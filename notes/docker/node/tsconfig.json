@@ -1,0 +1,27 @@
+{
+	// 编译选项
+	"compilerOptions": {
+		//配置 TypeScript 解析模块路径的方式。
+		"moduleResolution": "Node",
+		// 使用的模块系统，默认为 commonjs
+		"module": "ESNext",
+		// 编译目标 JavaScript 版本，默认为 ES3
+		"target": "esnext",
+		// 允许使用 default import 语法与 CommonJS 模块互操作
+		"esModuleInterop": true,
+		// 启用严格模式，推荐开启以获得更好的类型检查
+		"strict": true,
+		// 不允许隐式的 any 类型，推荐开启以获得更严格的类型检查
+		"noImplicitAny": false,
+		// 跳过对声明文件的检查
+		"skipLibCheck": true,
+		// 生成源映射文件，用于在调试时定位 TypeScript 源码
+		"sourceMap": true,
+		"noEmitOnError": false,
+	},
+	// 包含的文件
+	"include": [
+		"*.ts",
+		"*.mts"
+	]
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas</title>
+		<style>
+			canvas {
+				border: 1px solid #000;
+			}
+		</style>
+	</head>
+	<body style="">
+		<canvas id="tutorial" width="1000" height="500"></canvas>
+		<script>
+			/** @type {HTMLCanvasElement} */
+			var canvas=document.getElementById('tutorial'); // 获取 <canvas> 元素
+			var ctx=canvas.getContext('2d'); // 获取 2D 渲染上下文
+			setInterval(() => {
+				console.log('setInterval');
+			}, 1000);
+			function animate(timestamp) {
+				console.log(n++);
+				if(n>1000) {
+					return
+				}
+				window.requestAnimationFrame(animate);
+			}
+			let n = 500
+			window.requestAnimationFrame(animate);
+		</script>
+	</body>
+</html>

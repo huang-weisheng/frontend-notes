@@ -1,0 +1,37 @@
+{
+	"name": "electron_app",
+	"author": "hyx@123.com",
+	"version": "0.0.1",
+	"description": "这是一个electron项目",
+	"main": "src/main.mjs",
+	"type": "module",
+	"scripts": {
+		"electron:dev": "nodemon --watch ./src --exec electron . --inspect=9999",
+		"electron:build": "electron-builder"
+	},
+	"devDependencies": {
+		"electron": "33.2.0.1.1",
+		"electron-builder": "^25.0.5"
+	},
+	"build": {
+		"appId": "hyx.app.id",
+		"asar": false,
+		"win": {
+			"target": "portable",
+			"icon": "src/assets/icon/shield.png"
+		},
+		"files": [
+			"package.json",
+			{
+				"from": "./src",
+				"to": "./"
+			}
+		],
+		"extraMetadata": {
+			"main": "main.mjs"
+		},
+		"directories": {
+			"output": "release"
+		}
+	}
+}

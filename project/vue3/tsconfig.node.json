@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": [
+    "vite.config.*",
+    "vite-plugins/**/*"
+  ],
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "types": [
+      "node"
+    ]
+  }
+}

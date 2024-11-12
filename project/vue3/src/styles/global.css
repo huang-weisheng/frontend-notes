@@ -1,0 +1,6 @@
+@import 'element-plus/dist/index.css';
+:root {
+    --el-component-size: 24px;
+    --el-component-size-small: 24px;
+  }
+  

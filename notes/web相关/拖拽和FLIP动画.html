@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+<head>
+	<style>
+		li {
+			width: 300px;
+			margin-bottom: 8px;
+
+			header {
+				height: 30px;
+				background-color: rgb(64, 155, 224);
+			}
+
+			>main {
+				height: 100px;
+				background-color: rgb(205, 148, 244);
+
+				>span {
+					background-color: rgb(93, 255, 6);
+				}
+			}
+
+			main {
+				text-align: center;
+			}
+		}
+
+		.container {
+			border: 5px solid green;
+			width: 300px;
+			height: 200px;
+		}
+	</style>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+	<ol class="drag-list">
+		<li v-for="i in 3" drag-node drop-node>
+			<main>
+				<span for-drag-node>拖动区域{{i}}</span>
+			</main>
+		</li>
+	</ol>
+	<div class="container">
+		container ready
+	</div>
+	<script>
+		const {createApp,ref}=Vue;
+		createApp().mount('.drag-list');
+
+		/* drop 事件在元素或文本选择被放置到有效的放置目标上时触发。为确保drop事件始终按预期触发，
+		   应当在dragover事件中始终调用 preventDefault()且拖动元素effectAllowed与放置元素dropEffect事件类型兼容 */
+		const dragList=document.querySelector('.drag-list');
+		const flipDh=new FlipAnimation(dragList.children);
+		let dragingNode=null;
+
+		/*移除拖动元素draggable属性用于判断重新添加draggable属性*/
+		function removeDragAttr() {
+			if(dragingNode?.attributes?.getNamedItem('drag-node')) {
+				dragingNode.removeAttribute('draggable');
+			}
+			dragingNode=null;
+		}
+		//判断目标是否为指定拖动元素
+		window.addEventListener('mousedown',(e) => {
+			const forDragNode=e.target.closest('[for-drag-node]');
+			dragingNode=e.target.closest('[drag-node]');
+			if(dragingNode?.contains(forDragNode)) {
+				dragingNode.setAttribute('draggable',true);
+			}
+		});
+
+		window.addEventListener('mouseup',removeDragAttr);
+
+		//设置拖拽开始事件
+		window.ondragstart=(e) => {
+			//如果发生拖拽事件的目标不是mousedown事件中设置的元素,禁止拖动
+			//发生于选中多个多个拖动元素内的文本然后开始拖动文本
+			if(e.target!==dragingNode) {
+				return event.preventDefault();
+			}
+			//设置自定义拖拽图像
+			// var img = new Image ();
+			// img.src = 'url';
+			// e.dataTransfer.setDragImage ( img , 10 , 10 );
+
+			//DataTransfer 包含两个信息，数据的类型和数据值。类型是一个类型字符串（例如文本数据的格式是text/plain），值是一个文本字符串。
+			//拖拽开始时提供数据类型和数据值。 dragenter 和 dragover 事件可以获取类型,drop 事件都可获取
+			e.dataTransfer.setData('text/plain','This text may be dragged');
+			//自定义类型,其他应用程序不会支持这个类型，
+			e.dataTransfer.setData('custom','This is custom stats');
+
+			//effectAllowed必须兼容目标元素ondragover事件中的dropEffect属性才会触发目标元素的drop事件且鼠标不为禁止状态
+			//none|copy|move|link|copyMove|copyLink|linkMove|all
+			e.dataTransfer.effectAllowed='copyMove';
+			console.log('拖拽开始',e);
+		};
+
+		//设置拖拽结束事件
+		window.ondragend=function(e) {
+			removeDragAttr();
+			console.log('拖拽结束',e);
+		};
+
+
+		//定义拖拽进入事件
+		dragList.ondragenter=(e) => {
+			//判断是否为指定的被放入元素
+			//dragenter 事件中可以获取dataTransfer中的类型
+			if (!e.dataTransfer.types.includes('custom')) {
+				return
+			}
+
+			//阻止默认不允许放置元素的行为,preventDefault 或者return false
+			//可以防止将flip动画中pointerEvents=设为all时会触发enter事件,造成鼠标闪一下禁用状态;
+			e.preventDefault();
+
+			//如果无放入元素或放入元素===拖动元素
+			//放入元素是自身也要 e.preventDefault(); 防止闪烁。
+			const dropNode=e.target.closest('[drop-node]');
+			if(!dropNode||dropNode===dragingNode) {
+				return;
+			}
+
+			//交换元素位置
+			let targetIndex=[...dragList.children].indexOf(dropNode);
+			let soucerIndex=[...dragList.children].indexOf(dragingNode);
+			if(targetIndex>soucerIndex) {
+				dragList.insertBefore(dragingNode,dropNode.nextElementSibling);
+			}
+			else {
+				dragList.insertBefore(dragingNode,dropNode);
+			}
+			flipDh.play();
+		};
+
+		//添加 dragover 事件处理程序
+		dragList.ondragover=(e) => {
+			//判断是否为指定的被放入元素
+			//dragover事件中可以获取dataTransfer中的类型
+			if(!e.dataTransfer.types.includes('custom')) {
+				return;
+			}
+			//阻止默认不允许放置元素的行为,preventDefault 或者return false
+			e.preventDefault();
+
+			//允许被那些操作类型的拖拽元素放置,对应拖拽元素e.dataTransfer.effectAllowed属性
+			// 如果没有设置 dropEffect,浏览器会根据拖拽的元素类型和 effectAllowed 的值来决定
+			//用于ondrop事件是否执行和鼠标效果: copy|link|move|none
+			e.dataTransfer.dropEffect='move';
+		};
+
+		let dragContainer=document.querySelector('.container');
+		//进入容器事件,在容器内就持续执行
+		dragContainer.ondragover=function(e) {
+			//阻止默认不允许放置元素的行为
+			e.preventDefault();
+			e.dataTransfer.dropEffect='copy';
+		};
+		dragContainer.ondrop=(e) => {
+			//阻止默认事件,如拖入文件自动开启下载
+			e.preventDefault();
+			//drop事件中可以获取dataTransfer中的数据,类型,文件
+			console.log('有效放置',e);
+			console.log(e.dataTransfer.getData('custom'));
+			console.log(e.dataTransfer.getData('text/plain'));
+			console.log(e.dataTransfer.types);
+			console.log(e.dataTransfer.files);
+		};
+		//FLIP动画;
+		function FlipAnimation(animationElements=[]) {
+			// 初始化动画元素列表
+			this.animationElements=[...animationElements];
+
+			// 保存每个元素的初始位置
+			for(let i of this.animationElements) {
+				i.x=i.offsetLeft;
+				i.y=i.offsetTop;
+			}
+			// 定义播放动画的方法
+			FlipAnimation.prototype.play=function(animationTime=200) {
+				// 遍历每个动画元素
+				for(let i of this.animationElements) {
+					// 计算元素的新位置与旧位置的差值
+					i.newX=i.x-i.offsetLeft;
+					i.newY=i.y-i.offsetTop;
+
+					// 更新元素的当前位置
+					i.x=i.offsetLeft;
+					i.y=i.offsetTop;
+
+					// 禁用元素的指针事件，以防止在动画期间触发鼠标事件
+					i.style.pointerEvents='none';
+					// 在动画结束后恢复指针事件
+					setTimeout(() => {
+						i.style.pointerEvents='all';
+					},animationTime);
+				}
+				// 设置元素的初始变换状态为新的偏移量，移除过渡效果
+				this.animationElements.forEach((i) => {
+					i.style.transform=`translate(${i.newX}px, ${i.newY}px)`;
+					i.style.transition='0s';
+				});
+				// 使用双重 requestAnimationFrame 确保浏览器完成当前的重绘
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						// 设置动画的过渡效果，并将元素变换回原始位置
+						this.animationElements.forEach((i) => {
+							i.style.transition=animationTime/1000+'s';
+							i.style.transform=`translate(0px, 0px)`;
+						});
+					});
+				});
+			};
+		}
+	</script>
+</body>
+</html>

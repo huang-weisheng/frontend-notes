@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style>
+			#dlg {
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				margin: 0;
+			}
+
+			#dlg::backdrop {
+				background-color: rgba(93, 175, 52, .2);
+				backdrop-filter: blur(2px);
+			}
+		</style>
+	</head>
+	<body>
+		<button onclick="dlg.close()">
+			关闭模态框
+		</button>
+		<button onclick="dlg.show()">
+			开启模态框
+		</button>
+		<button onclick="dlg.close();dlg.showModal()">
+			开启带遮罩的模态框
+		</button>
+		<dialog id="dlg" open>
+			<button onclick="dlg.close()">
+				关闭模态框
+			</button>
+			<p>Greetings, one and all!</p>
+			<form method="dialog">
+				<!-- 有属性 method="dialog"的<form> 元素提交时关闭对话框。 -->
+				<button value="default">OK</button>
+			</form>
+		</dialog>
+		<script>
+			let dlg=document.querySelector('dialog')
+			onkeydown=(e) => {
+				//禁止使用esc键关闭模态框
+				e.code==='Escape'&&e.preventDefault()
+			}
+			//有属性 method="dialog"的<form> 元素提交时关闭对话框。对话框的 returnValue属性将会等于表单中被使用的提交按钮的 value
+			dlg.onclose=() => {
+				console.log(dlg.returnValue)//default
+			};
+		</script>
+	</body>
+</html>

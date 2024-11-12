@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>Popover Example</title>
+	<style>
+		:popover-open {
+			width: 200px;
+			height: 200px;
+			position: absolute;
+			inset: unset;
+			bottom: 5px;
+			right: 5px;
+			margin: 0;
+			background-color: darkblue;
+		}
+
+		#child-popover {
+			width: 100px;
+			height: 100px;
+			background-color: blueviolet;
+		}
+	</style>
+</head>
+<body>
+	<button popovertarget="popover">Toggle popover</button>
+	<button popovertarget="popover" popovertargetaction="show">Show popover</button>
+	<button popovertarget="popover" popovertargetaction="hide">Hide popover</button>
+	<!-- auto 可以通过 单击弹出窗口外部 或 ESC 键来隐藏弹出窗口; manual 相反 -->
+	<div id="popover" popover="auto">
+		<button popovertarget="child-popover">Toggle child popover</button>
+		<!-- 嵌套的 popover -->
+		<div id="child-popover" popover="auto"></div>
+	</div>
+
+	<script>
+		const popover=document.querySelector('#popover');
+		setInterval(() => {
+			// popover.showPopover() //显示
+			// popover.hidePopover() //隐藏
+			// popover.togglePopover()  //切换
+		},1000);
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang = "en" >
+	<head >
+		<meta charset = "UTF-8" >
+		<title >Title</title >
+		<style >
+			meter::-webkit-meter-even-less-good-value {
+				background: #19b919; /* low和high之间时的样式 */
+			}
+			meter::-webkit-meter-suboptimum-value {
+				background: #f00; /* 不在low和high之间时的样式 */
+			}
+		</style >
+	</head >
+	<body >
+		<p >
+			<meter
+				low = "30"
+				high = "70"
+				max = "100"
+				min = "0"
+				value = "80"
+				style = "height: 50px"
+			></meter >
+		</p >
+		<picture >
+			<!--满足媒体查询条件则显示source;否则显示img-->
+			<source srcset = "../assets/img/2.jpg" media = "(min-width: 1000px)" />
+			<source srcset = "../assets/img/1.jpg" media = "(min-width: 700px)" />
+			<img src = "../assets/img/3.jpg" alt = "MDN" />
+		</picture >
+	</body >
+</html >

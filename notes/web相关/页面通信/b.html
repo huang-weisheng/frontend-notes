@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>b</title>
+	</head>
+	<body>
+		<button id="send">发送广播(bbb)</button>
+		<button id="off">关闭广播</button>
+		<script>
+			// 创建一个监听“internal_notification”通道的新通道。
+			const bc=new BroadcastChannel('internal_notification');
+
+			//监听频道消息
+			bc.addEventListener('message',(e) => {
+				console.log('BroadcastChannel_message',e);
+			});
+
+			//发送一条任意类型的消息,给非当前页面监听“internal_notification”通道的广播对象。
+			send.onclick=() => {
+				bc.postMessage({b: 'b'});
+			};
+
+			off.onclick=() => {
+				//关闭该广播,不能再接收和发送消息
+				bc.close();
+			};
+
+			//可以接收来自非同源页面的消息
+			window.addEventListener('message',(e) => {
+				console.log('post_message',e);
+				//给来源页面回复消息
+				e.source.postMessage('reply message',e.origin);
+			});
+
+			// 监听storage事件,只能接收同源且非当前页面
+			window.addEventListener('storage',function(e) {
+				console.log('storage__message',e);
+			});
+		</script>
+	</body>
+</html>

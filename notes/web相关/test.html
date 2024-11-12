@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body>
+	<button onclick="selectFiles()">123</button>
+	<script>
+		document.body.getBoundingClientRect()
+		class EventBus extends EventTarget {
+			constructor() {
+				super();
+			}
+			on(eventName, callback) {
+				this.addEventListener(eventName, callback);
+			}
+			off(eventName, callback) {
+				this.removeEventListener(eventName, callback);
+			}
+			emit(eventName, data) {
+				const event = new CustomEvent(eventName, { detail: data });
+				this.dispatchEvent(event);
+			}
+			once(eventName, callback) {
+				const onceWrapper = (event) => {
+					callback(event);
+					this.off(eventName, onceWrapper);
+				};
+				this.on(eventName, onceWrapper);
+			}
+		}
+		const bus = new EventBus();
+		const bus1 = new EventBus();
+		bus1.emit=null
+		console.log(bus);
+		console.log(bus1);
+	</script>
+</body>
+
+</html>

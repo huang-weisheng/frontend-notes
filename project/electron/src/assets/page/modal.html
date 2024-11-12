@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline';connect-src 'self';">
+	<title>Hello modal!</title>
+</head>
+<body>
+	<iframe src="C:\Users\HuangWeiSheng\Desktop\Typescript.pdf" frameborder="0"></iframe>
+	<button id="pingBtn">ping</button>
+	<button id="setTTitleBtn">设置窗口标题</button>
+	<h1>Hello other!</h1>
+	We are using Node.js <span id="node-version"></span>,
+	Chromium <span id="chrome-version"></span>,
+	and Electron <span id="electron-version"></span>
+	<script  type="module">
+		// 设置webPreferences对象的 {contextIsolation: false,nodeIntegration: true} 属性后可以在渲染进程直接使用Node.js的API和模块
+		// 注: nodeAPI 需使用commonJS语法
+		const fs=require('fs');
+		import {a} from './modal.js'
+
+		const pingBtn=document.querySelector('#pingBtn');
+		const setTTitleBtn=document.querySelector('#setTTitleBtn');
+		pingBtn.onclick=async () => {
+			const response=await window.ping();
+			alert(response);
+		};
+		setTTitleBtn.onclick=() => {
+			window.electronAPI.setTitle(String(new Date()));
+		};
+	</script>
+</body>
+</html>

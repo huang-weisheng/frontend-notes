@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>request</title>
+		<link href="https://js.588ku.com/activity/20231024/images/vip_company_icon.png" rel="icon">
+	</head>
+	<body>
+		<button id="jsonRequest">JSON请求</button>
+		<button id="getTxt">流式GET文本</button>
+		<button id="stopText">中断流式文本请求</button>
+		<button>
+			<label for="uploadFile">二进制文件上传
+				<input type="file" name="file" id="uploadFile" hidden>
+			</label>
+		</button>
+		<button id="updateFormData">上传formData</button>
+		<button id="clearAllFile">清空文件</button>
+		<button id="connectWebsocket">连接websocket</button>
+		<button id="sendMessage">发送websocket消息</button>
+		<button id="sendFile">发送websocket文件</button>
+		<button id="closeWebsocket">断开websocket</button>
+	</body>
+</html>
+<script>
+	let jsonRequest=document.querySelector('#jsonRequest');
+	let getTxt=document.querySelector('#getTxt');
+	let stopText=document.querySelector('#stopText');
+	let uploadFile=document.querySelector('#uploadFile');
+	let updateFormData=document.querySelector('#updateFormData');
+	let clearAllFile=document.querySelector('#clearAllFile');
+	let sendMessage=document.querySelector('#sendMessage');
+	let sendFile=document.querySelector('#sendFile');
+	let connectWebsocket=document.querySelector('#connectWebsocket');
+	let closeWebsocket=document.querySelector('#closeWebsocket');
+	jsonRequest.onclick=() => {
+		fetch('/json',{
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({type: "json"})
+		})
+	}
+	getTxt.onclick=async function() {
+		//AbortController 接口表示一个控制器对象，允许你根据需要中止一个或多个 Web 请求。
+		let controller=new AbortController();
+		//返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web（网络）请求
+		const signal=controller.signal;
+		stopText.onclick=() => {
+			//中断请求,将不再处理服务器返回的数据
+			controller.abort();
+		};
+		//获取到响应头,包含一些状态信息
+		const response=await fetch('stream_fetch_text',{
+			//将 AbortSignal 作为一个选项传递进入请求的选项对象中,调用controller.abort ()终止请求
+			signal: signal,
+		});
+		console.log(response);
+		//Response 接口的只读属性 body 是暴露响应体内容的 ReadableStream。表示可读的字节数据流。getReader()返回来自网络提供的流数据的读取器
+		let body=response.body.getReader();
+		//使用指定的编码创建一个文本解码器 。参数默认utf8
+		let decoder=new TextDecoder('utf8');
+		while(1) {
+			//read() 方法返回一个 Promise，这个 promise 提供流的内部队列中下一个分块（以供访问）
+			const {value: bufferValue,done}=await body.read();
+			if(done) break;
+			//decode() 方法返回一个字符串，包含参数传递的缓冲区解码后的文本。
+			let txt=decoder.decode(bufferValue);
+			console.log('流式获取:    '+txt);
+		}
+	};
+	uploadFile.onchange=() => {
+		let file=uploadFile.files[0];
+		file.arrayBuffer().then(arrayBuffer => {
+			fetch('http://localhost:666/binaryUpload',{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/octet-stream',
+					'x-ext': file.name.split('.').pop(),
+				},
+				body: arrayBuffer,
+			})
+				.then(response => {
+					response.headers.forEach((a,b) => {
+						console.log(a,b);
+					});
+				});
+		});
+	};
+	updateFormData.onclick=() => {
+		let file=document.createElement('input');
+		file.type='file';
+		file.onchange=(e) => {
+			let f=e.target.files[0];
+			let formData=new FormData();
+			formData.append('name','hyx');
+			formData.append('file',f);
+			console.log(formData);
+			fetch('/formDataUpload',{
+				method: 'POST',
+				body: formData,
+			});
+		};
+		file.click();
+	};
+	clearAllFile.onclick=async () => {
+		let response=await fetch('',{method: 'DELETE'});
+	};
+	connectWebsocket.onclick=() => {
+		if(window.ws) return
+		//protocol 子协议,提交给服务端,可以作为用户标识字段,可以使用[string1,string2]方式传多个
+		let protocol=['hyx','jyb'];
+		window.ws=new WebSocket('ws://'+location.host,protocol);
+		//readyState返回当前 WebSocket 的链接状态，只读。 0:正在链接中;1:已经链接并且可以通讯;2:连接正在关闭;3:连接已关闭或者没有链接成功。
+		// console.log ( ws.readyState );
+		ws.onopen=(e) => {
+			//ws.protocol 属性获取服务端选择的子协议。
+			console.log('clientOpen:protocol=',ws.protocol);
+			sendMessage.onclick=() => {
+				ws.send(ws.protocol+'客户端发送的消息');
+				//bufferedAmount 返回已经被send()方法放入队列中但还没有被发送到网络中的数据的字节数。一旦队列中的所有数据被发送至网络，则该属性值将被重置为 0。
+				console.log(ws.bufferedAmount);
+				setTimeout(() => {
+					console.log(ws.bufferedAmount);
+				},0);
+			};
+			sendFile.onclick=() => {
+				const fileInput=document.createElement('input');
+				fileInput.type='file';
+				fileInput.onchange=async () => {
+					let buffer=await fileInput.files[0].arrayBuffer();
+					ws.send(buffer);
+					console.log(ws.binaryType);
+				};
+				fileInput.click();
+			};
+
+			closeWebsocket.onclick=() => {
+				//关闭websocket连接,给服务端发一个opcode为8的websocket帧
+				ws.close();
+			};
+			ws.onmessage=(e) => {
+				console.log('message',e);
+			};
+			ws.onclose=(e) => {
+				console.log('close',e);
+			};
+			ws.onerror=(e) => {
+				console.log('error',e);
+			};
+		};
+	};
+
+</script>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style>
+			#tutorial {
+				display: block;
+				background-color: palegoldenrod;
+			}
+		</style>
+	</head>
+	<body>
+		<!--<canvas>是一个可以使用脚本 (通常为JavaScript) 来绘制图形的 HTML 元素。默认大小为 300 像素 ×150 像素-->
+		<canvas id="tutorial" width="800" height="300">
+		</canvas>
+		<script>
+			/**@type {HTMLCanvasElement}*/
+			var canvas=document.getElementById('tutorial');
+			var ctx=canvas.getContext('2d');
+			var startTime;
+			var duration=3000; // 动画持续时间为1秒钟
+			var steps=100; // 曲线绘制的步数
+			var step=0;
+			ctx.lineWidth=3;
+			const gradient=ctx.createLinearGradient(20,0,220,0);
+			// Add three color stops
+			gradient.addColorStop(0,'green');
+			gradient.addColorStop(1,'red');
+			ctx.strokeStyle=gradient;
+			ctx.strokeRect(20,250,250,100);
+			function animate(currentTime) {
+				if(!startTime) {
+					startTime=currentTime;
+				}
+
+				// 计算动画已经进行的时间
+				var elapsedTime=currentTime-startTime;
+
+				// 计算当前动画的进度（范围在0到1之间）
+				var progress=Math.min(elapsedTime/duration,1);
+
+				// 计算当前动画应该绘制的曲线点数
+				step=Math.floor(steps*progress);
+
+				// 清除画布
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+
+				// 绘制贝塞尔曲线的描绘效果
+				ctx.beginPath();
+				ctx.moveTo(0,0);
+				for(var i=0;i<=step;i++) {
+					var t=i/steps;
+					var x=bezier(t,0,250,50,300);
+					var y=bezier(t,0,50,220,300);
+					ctx.lineTo(x,y);
+				}
+				ctx.stroke();
+
+				// 如果动画未结束，继续请求下一帧动画
+				if(progress<1) {
+					requestAnimationFrame(animate);
+				}
+			}
+
+			// 开始动画
+			requestAnimationFrame(animate);
+
+			// 贝塞尔函数
+			function bezier(t,p0,p1,p2,p3) {
+				return Math.pow(1-t,3)*p0+3*Math.pow(1-t,2)*t*p1+3*(1-t)*Math.pow(t,2)*p2+Math.pow(t,3)*p3;
+			}
+
+		</script>
+	</body>
+</html>

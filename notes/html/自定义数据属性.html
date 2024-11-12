@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang = "en" >
+<head >
+	<meta charset = "UTF-8" >
+	<title >自定义数据属性</title >
+</head >
+<body >
+	<h1 data-abc = "100" id = "h1" >哈哈</h1 >
+	<script >
+		const el = document.querySelector ( '#h1' );
+		console.dir ( el.dataset.abc ); //访问属性
+		el.dataset.example = null; //设置属性
+		console.log ( el.dataset );
+		delete el.dataset.abc; //删除属性
+		console.log ( el.dataset );
+	</script >
+</body >
+</html >

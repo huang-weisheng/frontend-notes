@@ -1,0 +1,12 @@
+<h1 style="color: red;" class="h1">h1</h1>
+<main></main>
+<script>
+	let main=document.querySelector('main');
+	let h1=document.querySelector('.h1');
+	// 将一个 shadow root 附加到元素上,将只显示 shadow root 中的内容,并返回对 ShadowRoot 的引用
+	let quoteShadow=main.attachShadow({mode: 'open'});
+	// 将 h1 添加到 shadow root 中,main 将显示 h1
+	quoteShadow.append(h1);
+	// 获取 shadow root
+	console.log(main.shadowRoot);
+</script>

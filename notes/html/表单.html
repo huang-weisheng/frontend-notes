@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>表单</title>
+	<style>
+		input {
+			font-size: 16px;
+		}
+
+		*:required {
+			border-color: rgb(255, 0, 0);
+		}
+
+		/* 未设置必填 */
+		*:optional {
+			border-color: rgb(0, 255, 0);
+		}
+
+		input:invalid+span::after {
+			content: "✖";
+		}
+
+		input:valid+span::after {
+			content: "✓";
+		}
+
+		input[type="number"]::-webkit-inner-spin-button {
+			display: none;
+			/* 去掉数字输入框右侧上下箭头 */
+		}
+
+		input[type="range"] {
+			height: 150px !important;
+			margin: 0;
+			color: #000;
+			width: 30px;
+			/*让滑块竖着 */
+			writing-mode: vertical-lr;
+			/* 滑块方向 */
+			direction: ltr;
+		}
+
+		input[type="range"]+datalist {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 150px;
+		}
+	</style>
+</head>
+<body>
+	<form action="/" method="post" enctype="multipart/form-data" onsubmit="submitForm(arguments)">
+		<p content="账号密码">
+			<label>
+				用户名:
+				<input placeholder="3位非空" maxlength="6" name="username" pattern="\S{3,}" required type="text"
+					list="names" autocomplete="on">
+				<datalist id="names">
+					<option value="张三"></option>
+					<option value="李四"></option>
+					<option value="王五"></option>
+				</datalist>
+			</label>
+			<label for="pwd">密码:</label>
+			<input id="pwd" name="password" type="password" required autocomplete="on">
+		</p>
+		<p content="描述">
+			<label for="story">description:</label>
+			<!-- minlength 并不能阻止用户删除字符,只参与验证，设置required后才生效 -->
+			<textarea style="resize: none;" maxlength="20" required id="story" name="story" rows="2"
+				cols="50">description</textarea>
+		</p>
+		<p content="邮箱">
+			<label>邮箱:
+				<input name="email" type="email" value="123@qq.com" autocomplete="on">
+			</label>
+		</p>
+		<p content="性别爱好">
+			<span>性别:</span>
+			<label>男
+				<input name="radio" checked onchange="radioChange(this)" type="radio" value="man">
+			</label>
+			<label> 女
+				<input name="radio" onchange="radioChange(this)" type="radio" value="woman">
+			</label>
+			<span style="margin-left: 16px;">爱好:</span>
+			<label>吃
+				<input checked name="checkbox" onchange="checkboxChange(this)" type="checkbox" value="eat">
+			</label>
+			<label>喝
+				<input name="checkbox" onchange="checkboxChange(this)" type="checkbox" value="drink">
+			</label>
+			<label>玩
+				<input id="play" name="checkbox" onchange="checkboxChange(this)" type="checkbox" value="play">
+			</label>
+		</p>
+		<p content="地址">
+			<label>地址:(ctrl+单击 多选)
+				<select id="select" multiple onchange="selectChange(this)" name="address">
+					<optgroup label="江苏">
+						<option value="NJ">南京</option>
+						<option value="SZ">苏州</option>
+					</optgroup>
+					<optgroup label="安徽">
+						<option selected value="HF">合肥</option>
+					</optgroup>
+				</select>
+			</label>
+		</p>
+		<p content="日期时间">
+			<label>日期:
+				<input type="date" name="date" max="2023-12-31" min="2023-12-01" step="3"><span></span>
+			</label>
+			<label>时间:
+				<input type="time" name="time" min="08:00" max="12:00" value="10:00"><span></span>
+			</label>
+		</p>
+		<p content="文件">
+			<label>
+				文件:
+				<!--accept 可选类型,多种用逗号分隔-->
+				<!--一个不带扩展名的 MIME 类型字符串。-->
+				<!--一个以英文句号（“.”）开头的合法的不区分大小写的文件名扩展名。例如：.jpg、.pdf 或 .doc。-->
+				<!--audio/*，表示“任何音频文件” video/*，表示“任何视频文件” image/*，表示“任何图片文件”。-->
+				<input type="file" accept="image/*" name="file" multiple><!--webkitdirectory 属性表示只能选择目录,非标准-->
+			</label>
+		</p>
+		<p content="颜色数字">
+			<label>颜色
+				<input name="color" type="color" value="#ff00ff">
+			</label>
+			<label style="margin-left: 16px;">数字
+				<!--max和min不限制用户输入,只在提交表单时参与验证-->
+				<input name="number" type="number" min="-10" max="10" value="0">
+			</label>
+		</p>
+		<p content="滑块">
+			<label style="display: flex">滑块
+				<input type="range" min="0" max="100" name="range" list="tickmarks" /><!--值的粒度默认为1-->
+				<datalist id="tickmarks">
+					<option value="0" label="很冷！"></option>
+					<option value="25" label="凉爽"></option>
+					<option value="50" label="适中"></option>
+					<option value="75" label="变得暖和了！"></option>
+					<option value="100" label="很热！"></option>
+				</datalist>
+			</label>
+		</p>
+		<input id="send" type="submit" value="发送">
+		<input type="reset" value="重置">
+		<input type="button" onclick="checkValidation()" value="checkValidation账号"></input>
+	</form>
+</body>
+</html>
+<script>
+	function submitForm(e) {
+		const event = e[0]
+		 //禁止默认提交刷新的事件
+		event.preventDefault()
+
+		const form = event.target
+		let formDataParams=new FormData(form);
+		let SearchParams=new URLSearchParams(formDataParams);
+		console.log(formDataParams);
+		console.log(SearchParams);
+		console.log(SearchParams.toString());
+	}
+	function radioChange(radio) {
+		console.log(radio.value,radio.checked);
+	}
+	function checkboxChange(checkBox) {
+		console.log(checkBox.value,checkBox.checked);
+	}
+	function selectChange(select) {
+		let selects=[...select].map(i => ({value: i.value,selected: i.selected}));
+		console.table(selects);
+	}
+
+	let checkDom=document.querySelector('input[name=username]');
+	//对可提交元素有效性的检查是在提交父元素 <form> 之前或调用父元素 <form> 或元素自己的 checkValidity()或reportValidity() 方法之后
+	checkDom.addEventListener('invalid',(e) => {
+		console.dir(e);
+	});
+
+	function checkValidation() {
+		/* 	表单验证规则: 当表单触发验证后,会在第一个未通过验证的元素的上弹出验证信息并使其获取焦点,此时该元素的input事件都触发这个元素验证,直至满足验证规则或失去焦点。*/
+		checkDom.oninput=() => {
+			//将消息设置为空字符串至关重要。只要错误消息不为空，表单将不会通过验证，也不会提交。
+			checkDom.setCustomValidity('');
+
+			//input事件中再次验证有效性,覆盖原生的提示信息。验证时,没有自定义验证信息并不满足验证规则的情况下,将弹出系统原始验证信息。
+			//checkValidity()方法可以用来验证当前表单控件元素，或者整个表单是否验证通过，返回值是布尔值，true或者false。
+			if(!checkDom.checkValidity()) {
+				checkDom.setCustomValidity('自定义验证提示:没通过验证');
+			}
+		};
+
+		//HTMLObjectElement 接口的 validity 只读属性返回一个 ValidityState，表明元素的有效性状态。(表单元素验证详情)
+		/* valid 只读。属性值为布尔类型。当前元素是否完全验证通过，通过是true，会匹配:valid这个CSS伪类；不通过是false，会匹配:invalid这个CSS伪类。 */
+		/* customError	 只读。属性值为布尔类型。如果元素调用setCustomValidity()方法设置了自定义的验证信息则值是true。 */
+		/* patternMismatch	 只读。属性值为布尔类型。和指定的pattern正则属性值不匹配的时候值是true。会匹配:invalid这个CSS伪类。 */
+		/* rangeOverflow	 只读。属性值为布尔类型。超过max属性设置的值的时候会是true。同时会匹配CSS :invalid和:out-of-range伪类。 */
+		/* rangeUnderflow	 只读。属性值为布尔类型。小于min属性设置的值的时候会是true。同时会匹配CSS :invalid和:out-of-range伪类。 */
+		/* stepMismatch	 只读。属性值为布尔类型。输入框当前值和step属性值不匹配的时候stepMismatch的值会是true。同时元素会匹配CSS :invalid和:out-of-range伪类。 */
+		/* tooLong	 只读。属性值为布尔类型。输入内容长度超出maxlength的限制时候会是true。同时会匹配CSS :invalid和:out-of-range伪类。 */
+		/* tooShort	 只读。属性值为布尔类型。输入内容长度不足minlength的限制时候会是true。同时会匹配CSS :invalid和:out-of-range伪类。 */
+		/* typeMismatch	 只读。属性值为布尔类型。输入框的值和输入框类型不匹配的时候该属性值会是true。例如输入框type类型是email或者url时候。如果值是true，会匹配:invalid这个CSS伪类。 */
+		/* valueMissing	 只读。属性值为布尔类型。如果元素设置了required属性，同时输入框的值为空，则该属性值是true。如果值是true，会匹配:invalid这个CSS伪类。 */
+		let validityInfo=checkDom.validity;
+		if(!validityInfo.valid) {
+			//setCustomValidity() 方法设置指定的验证消息为选择元素的自定义验证消息。若不为空，表单将不会通过验证，也不会提交。
+			checkDom.setCustomValidity('自定义验证提示:没通过验证');
+		}
+		//reportValidity()方法可以触发浏览器的内置的验证提示交互，返回布尔值，true或者false。
+		checkDom.reportValidity();
+		//HTMLSelectElement.validationMessage 表示当前输入框元素如果要显示出错提示，出错提示的文字内容是什么。
+		console.log(checkDom.validationMessage);
+	}
+</script>
