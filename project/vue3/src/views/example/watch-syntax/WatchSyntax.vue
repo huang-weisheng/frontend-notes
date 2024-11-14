@@ -59,17 +59,21 @@
 
 	let syncValue = ref(1);
 	let asyncValue = ref(999);
-	let unwatchEffect: WatchStopHandle;
+	let unwatchEffect = ref<WatchStopHandle | undefined>(undefined);
 
 	//watchEffect 允许我们自动跟踪回调的响应式依赖。只跟踪回调中被使用到的属性,而不是递归地跟踪所有的属性。
 	//异步创建的侦听器必须手动停止它，以防内存泄漏。同步创建的侦听器会在宿主组件卸载时自动停止。
 	function createAsync() {
-		unwatchEffect = watchEffect(async (): Promise<void> => {
+		if (unwatchEffect.value) {
+			ElMessage.warning('侦听器已存在');
+			return;
+		}
+		ElMessage.success('创建watchEffect');
+		unwatchEffect.value = watchEffect(async (): Promise<void> => {
 			//watchEffect 仅会追踪在其同步执行期间访问到的依赖	
 			await asyncFn(syncValue.value);
 			//同步期间访问不到,不会触发watchEffect回调
 			await asyncFn(asyncValue.value);
-
 		}, {
 			//如果想在侦听器回调中能访问被 Vue 更新之后的 DOM，你需要指明 flush: 'post' 选项：
 			flush: 'post',
@@ -77,12 +81,9 @@
 	}
 	//停止侦听器，调用 watch 或 watchEffect 返回的函数：
 	function stopWatch() {
-		unwatchSimple();
-		unwatchComplex();
-		unwatchComputedValue();
-		unwatchGetter();
-		unwatchMultiple();
-		unwatchEffect();
+		unwatchEffect.value && unwatchEffect.value();
+		unwatchEffect.value = undefined;
+		ElMessage.success('已停止watchEffect侦听器');
 	}
 
 	function asyncFn(n: number): Promise<number> {
@@ -102,18 +103,14 @@
 		</el-tag>
 		<label>
 			简单:<input v-model="simple" />
-		</label>
-		<label>
 			复杂:<input v-model="complex.a.b.c" />
 		</label>
-		<label>
+		<el-button type="primary" @click="createAsync" style="margin-left: 8px;">创建watchEffect</el-button>
+		<el-button type="primary" @click="stopWatch">停止watchEffect</el-button>
+		<label v-if="unwatchEffect">
 			同步:<input v-model="syncValue" />
-		</label>
-		<label>
 			异步:<input v-model="asyncValue" />
 		</label>
-		<el-button type="primary" @click="createAsync">创建watchEffect</el-button>
-		<el-button type="primary" @click="stopWatch">停止所有侦听</el-button>
 	</fieldset>
 
 </template>

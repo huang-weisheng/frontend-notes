@@ -18,32 +18,32 @@
 		// 子组件修改 text 时触发,父组件修改不触发
 		set(value) {
 			if (modifiers.capitalize) {
-				return `修饰符`;
-			}	
+				//首字母大写
+				return value.charAt(0).toUpperCase() + value.slice(1);
+			}
 			return value;
 		},
 		// 子组件或父组件访问 text 时触发
 		get(val) {
-			console.log( 'get:', val )
 			return val;
 		}
 	});
 
 	function update() {
-		color.value = `颜色${Math.ceil(Math.random()*100)}`;
-		count.value = `数字${Math.ceil(Math.random()*100)}`;
-		text.value = `文字${Math.ceil(Math.random()*100)}`;
+		color.value = `color${Math.ceil(Math.random()*100)}`;
+		count.value = `count${Math.ceil(Math.random()*100)}`;
+		text.value = `text${Math.ceil(Math.random()*100)}`;
 	}
 </script>
 
 <template>
+	<el-button type="primary" @click="update">子组件更新</el-button>
 	<input v-model="color" placeholder="color">
 	<input v-model="count" placeholder="count">
 	<input v-model="text" placeholder="text">
-	<el-button type="primary" @click="update">sonInputChange</el-button>
 </template>
 <style scoped>
 	input {
-		width: 120px;
+		width: 100px;
 	}
 </style>

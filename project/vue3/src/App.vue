@@ -6,7 +6,8 @@
 			<el-button type="primary" @click="setTitle">设置标题</el-button>
 			<div style="border: 3px dashed goldenrod;-webkit-app-region: drag;">
 				<span>可拖动区域,无边框模式下生效,对应鼠标事件将由系统托管</span>
-				<el-tag type="info" style="-webkit-app-region: no-drag;margin:5px 10px;">
+				<el-tag type="info"
+					style="-webkit-app-region: no-drag;margin:5px 10px;">
 					不可拖动区域
 				</el-tag>
 			</div>

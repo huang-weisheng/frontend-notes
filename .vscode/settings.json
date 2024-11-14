@@ -1,4 +1,7 @@
 {
+	"[vue]": {
+		"editor.defaultFormatter": "Vue.volar"
+	},
 	"cursor.aipreview.enabled": true,
 	"cursor.chat.collapseInputBoxPills": true,
 	"cursor.chat.defaultNoContext": true,
@@ -19,6 +22,8 @@
 	"editor.cursorStyle": "block",
 	"editor.cursorBlinking": "expand",
 	"explorer.confirmUndo": "verbose",
+	"editor.formatOnPaste": true,
+	"html.format.wrapAttributes": "preserve",
 	"javascript.experimental.updateImportsOnPaste": true,
 	"javascript.format.semicolons": "insert",
 	"javascript.inlayHints.enumMemberValues.enabled": true,
@@ -53,6 +58,7 @@
 	"typescript.referencesCodeLens.showOnAllFunctions": true,
 	"typescript.suggest.completeFunctionCalls": true,
 	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
+	"typescript.tsdk": "node_modules\\typescript\\lib",
 	"vue.autoInsert.dotValue": true,
 	"vue.format.script.initialIndent": true,
 	"vue.format.style.initialIndent": true,
@@ -62,6 +68,7 @@
 	"vue.inlayHints.optionsWrapper": true,
 	"vue.inlayHints.vBindShorthand": true,
 	"vue.splitEditors.icon": true,
+	"vue.format.wrapAttributes": "preserve",
 	"workbench.commandPalette.preserveInput": true,
 	"workbench.editor.enablePreviewFromCodeNavigation": true,
 	"workbench.editor.enablePreviewFromQuickOpen": true,
@@ -69,6 +76,5 @@
 	"workbench.editor.wrapTabs": true,
 	"workbench.list.smoothScrolling": true,
 	"workbench.activityBar.location": "top",
-	"window.title": "${rootNameShort}",
-	"typescript.tsdk": "node_modules\\typescript\\lib"
+	"window.title": "${rootNameShort}"
 }

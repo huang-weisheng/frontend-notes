@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<example-watch />
-		<ref-props-emits />
-		<example-v-model />
+	<div class="example">
+		<prop-emit />
+		<watch-syntax />
+		<v-model />
 		<example-provide />
 		<div style="display: flex;">
-			<example-composable />
-			<example-directive />
+			<composable-function />
+			<custom-directive />
 		</div>
 		<div style="display: flex;">
 			<slot-vue />
@@ -18,15 +18,20 @@
 	</div>
 </template>
 <script setup lang="ts">
-	import ExampleWatch from '@/views/example/watch-syntax/WatchSyntax.vue';
-	import RefPropsEmits from '@/views/example/PropsEmits/ExamplePropsEmits.vue';
-	import ExampleVModel from '@/views/example/v-model/ExampleVModel.vue';
-	import ExampleProvide from '@/views/example/ProvideInject/ExampleProvide.vue';
-	import ExampleComposable from '@/views/example/ComposableFunction/ExampleComposable.vue';
+	import PropEmit from '@/views/example/prop-emit/FatherComponent.vue';
+	import WatchSyntax from '@/views/example/watch-syntax/WatchSyntax.vue';
+	import VModel from '@/views/example/v-model/FatherModel.vue';
+	import ExampleProvide from '@/views/example/ProvideInject/ProvideModule.vue';
+	import ComposableFunction from '@/views/example/composable-function/ComposableFunction.vue';
 	import KeepLive from '@/views/example/KeepLive/KeepAlive.vue';
-	import ExampleDirective from '@/views/example/ExampleDirective.vue';
+	import CustomDirective from '@/views/example/custom-directive/CustomDirective.vue';
 	import SlotVue from '@/views/example/Slot/index.vue';
 	import StateManagement from '@/views/example/StateManagement/index.vue';
 	import RouterVue from '@/views/example/RouterVue/index.vue';
 	import PiniaTemplate from '@/views/example/PiniaTemplate/index.vue';
 </script>
+<style scoped>
+	.example {
+		width: 1000px;
+	}
+</style>

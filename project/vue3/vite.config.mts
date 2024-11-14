@@ -16,16 +16,15 @@ export default defineConfig(({ command, mode }) => {
 			sourcemap: false,// 生成源映射文件
 			chunkSizeWarningLimit: 1024,//打包文件大小警告阈值
 			minify: true, //是否开启代码压缩	
-			target: 'esnext',// 指定目标ECMAScript版本
+			target: 'ESNext',// 指定目标ECMAScript版本
 			//设置资源内联为 base64的阈值
 			assetsInlineLimit: (filePath: string, content: Buffer)=>{
 				//返回true则将资源内联为 base64,否则不内联	
 				return content.byteLength < 0;
 			},
-			// rollup 打包工具配置
+			// rollup 中多次引入的局部注册组件会自动被提取成单独的文件
 			rollupOptions: {
 				// 自定义输出目录结构和分包,覆盖assetsDir属性
-				// rollup 中多次引入的局部注册组件会自动被提取成单独的文件
 				output: {
 					//规定入口文件的输出路径和命名格式。
 					entryFileNames: 'js/entry.[name].[hash].js',
@@ -79,48 +78,52 @@ export default defineConfig(({ command, mode }) => {
 			port: 666, //vite项目启动时自定义端口
 			host: '0.0.0.0',
 			hmr: true,//是否开启热更新
-			headers: {
-				'X-Custom-Header': 'hyx'
+			headers: {//设置响应给浏览器的头,只对开发服务器直接处理的静态资源请求有效
+				'X-Custom-To-Browser': 'Custom-Header'
 			},
+			//代理服务器配置
 			proxy: {
-				'^/hyx': {
-					target: 'http://localhost:666',
+				'^/vvhan': {
+					target: 'https://api.vvhan.com',
 					//将主机标头的来源更改为目标 URL
 					changeOrigin: true,
-					//配置转发出去的请求的请求头
+					//配置转发出去的请求的请求头,只对代理的请求有效
 					headers: {
-						'X-Custom-Header': 'Custom'
+						'Custom-To-Server': 'Custom-Header'
 					},
-					//路径重写,转发请求时去掉开头的/api
-					rewrite: (path) => path.replace(/^\/hyx/, ''),
+					//路径重写
+					rewrite: (path) => path.replace(/^\/vvhan/, ''),
 					//是否添加x-forward标头
-					xfwd: false,
+					xfwd: true,
+					//转发配置
 					configure: (proxy, _options) => {
 						//这里也可以配置转发出去的请求的请求头
 						proxy.on('proxyReq', function (proxyReq, req, res) {
+							const proxyReqHeaders = proxyReq.getHeaders();
+							const originHeaders = req.headers;
+
 							//移除请求头
-							proxyReq.removeHeader('referer');
+							proxyReq.removeHeader('Custom-To-Server');
 							//添加请求头
-							proxyReq.setHeader('HOST', 'www.hyx.com');
+							proxyReq.setHeader('proxy-to-server', 'Proxy-Header');
+							
+							const newProxyReqHeaders = proxyReq.getHeaders();
 						});
 						//这里可以配置代理后响应给浏览器的响应头
 						proxy.on('proxyRes', (proxyRes, req, res) => {
-							//移除响应头,某些头只能设置别的值,无法删除
-							delete proxyRes.headers['access-control-expose-headers'];
+							const proxyResHeaders = { ...proxyRes.headers };
+							const originHeaders = { ...req.headers };
+
 							//操作返回给浏览器原请求的响应头
-							proxyRes.headers["To-Browser-Header"] = "setHeader";
+							proxyRes.headers["Proxy-To-Browser"] = "Proxy-Header";
+							proxyRes.headers["Proxy-To-Delete"] = "Delete-Header";
+							delete proxyRes.headers['Proxy-To-Delete'];
+
+							const newProxyResHeaders = { ...proxyRes.headers };
 						});
 					}
 				},
 			}
-
 		},
-		//依赖预构建选项
-		optimizeDeps: {
-			//强制预构建链接的包。
-			include: [],
-			//在预构建中强制排除的依赖项。
-			exclude: []
-		}
 	};
 });

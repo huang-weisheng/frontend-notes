@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"include": [ //包含的文件	
+	"include": [ //包含的文件
 		"src/**/*.d.ts",
 		"src/**/*.ts",
 		"src/**/*.mts",
@@ -65,16 +65,9 @@
 			]
 		},
 		"lib": [
-			// Target ES2020 to align with Vite.
-			// <https://vitejs.dev/config/build-options.html#build-target>
-			// Support for newer versions of language built-ins are
-			// left for the users to include, because that would require:
-			//   - either the project doesn't need to support older versions of browsers;
-			//   - or the project has properly included the necessary polyfills.
-			"ES2020",
+			"ESNext",
 			"DOM",
 			"DOM.Iterable"
-			// No `ScriptHost` because Vue 3 dropped support for IE
 		],
 	},
 	"exclude": [ //排除的文件
@@ -82,3 +75,4 @@
 		"dist"
 	]
 }
+
