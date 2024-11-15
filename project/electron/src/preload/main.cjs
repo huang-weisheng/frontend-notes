@@ -3,7 +3,6 @@
 // 不开启渲染进程上下文隔离可以直接在预加载脚本中将变量挂载到window全局对象上
 // 必须关闭安全沙箱功能 webPreferences.sandbox , 预加载文件才可使用es语法
 const {ipcRenderer,contextBridge}=require('electron');
-const fs=require('fs');
 
 for(const dependency of ['chrome','node','electron']) {
 	console.log(`${dependency}-version`,process.versions[dependency]);

@@ -6,14 +6,14 @@
 		<example-provide />
 		<div style="display: flex;">
 			<composable-function />
-			<custom-directive />
+			<state-management />
 		</div>
 		<div style="display: flex;">
 			<slot-vue />
-			<state-management />
+			<custom-directive />
 		</div>
-		<keep-live />
-		<PiniaTemplate />
+		<keep-alive />
+		<pinia-store />
 		<RouterVue />
 	</div>
 </template>
@@ -23,12 +23,12 @@
 	import VModel from '@/views/example/v-model/FatherModel.vue';
 	import ExampleProvide from '@/views/example/ProvideInject/ProvideModule.vue';
 	import ComposableFunction from '@/views/example/composable-function/ComposableFunction.vue';
-	import KeepLive from '@/views/example/KeepLive/KeepAlive.vue';
+	import KeepAlive from '@/views/example/keep-alive/KeepAlive.vue';
 	import CustomDirective from '@/views/example/custom-directive/CustomDirective.vue';
-	import SlotVue from '@/views/example/Slot/index.vue';
-	import StateManagement from '@/views/example/StateManagement/index.vue';
+	import SlotVue from '@/views/example/slot-demo/SlotContent.vue';
+	import StateManagement from '@/views/example/state-management/StateManagement.vue';
 	import RouterVue from '@/views/example/RouterVue/index.vue';
-	import PiniaTemplate from '@/views/example/PiniaTemplate/index.vue';
+	import PiniaStore from '@/views/example/pinia-store/PiniaStore.vue';
 </script>
 <style scoped>
 	.example {

@@ -62,21 +62,6 @@ export const createMainWindow=async (screenInfo) => {
 	mainWindow.on('ready-to-show',() => {/** 窗口加载完成 */});
 	//打开控制台
 	mainWindow.webContents.openDevTools();
-	//在渲染进程中执行 JavaScript 代码。返回包含执行结果的 Promise。
-	const title=await mainWindow.webContents.executeJavaScript('document.title')
-
-	//窗口的基本操作和属性
-	function setWindowProperty() {
-		mainWindow.setPosition(0,0); //设置位置
-		mainWindow.setSize(1200,600); //设置大小
-		mainWindow.hide(); //隐藏窗口
-		mainWindow.show(); //显示窗口
-		mainWindow.setFullScreen(false); //设置是否全屏
-		mainWindow.unmaximize(); //取消窗口最大化
-		mainWindow.minimize(); //最小化窗口
-		mainWindow.maximize(); //窗口最大化
-		mainWindow.isMaximized(); //获取窗口是否最大化
-	}
 	//自定义窗口菜单
 	setIndexMenuTemplate(mainWindow);
 	//关闭时最小化到托盘

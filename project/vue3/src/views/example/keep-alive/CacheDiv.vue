@@ -1,23 +1,26 @@
 <script setup lang="ts">
 	import {onActivated,onDeactivated,ref} from 'vue';
-	import { ElTag } from 'element-plus';
+	import { ElMessage } from 'element-plus';
 	let divContent=ref('可编辑DIV');
+
 	onActivated(() => {
-		//console.log ( 'div加载' )
+		ElMessage.success('Div===Activated');
 	});
 
 	onDeactivated(() => {
-		//console.log ( 'div卸载' )
+		ElMessage.warning('Div===Deactivated');
 	});
 </script>
 
 <template>
-	<div contenteditable="true" style="border: 1px solid #1cd;">{{divContent}}</div>
+	<div contenteditable="true">{{divContent}}</div>
 </template>
 
 <style  scoped>
 	div {
 		height: 25px;
-		overflow: auto
+		overflow: auto;
+		border: 1px solid #1cd;
+		width: 200px;
 	}
 </style>

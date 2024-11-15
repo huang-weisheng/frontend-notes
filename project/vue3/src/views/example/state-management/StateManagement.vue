@@ -18,14 +18,12 @@
 </script>
 <template>
 	<fieldset>
-		<legend>
-			<el-tag type="danger">
-				<h2>状态管理</h2>
-			</el-tag>
-			<el-button type="primary" @click="incrementA">countA++</el-button>
-			<el-button type="primary" @click="incrementB">countB++</el-button>
-		</legend>
+		<el-tag type="danger">
+			<h3>状态管理</h3>
+		</el-tag>
+		<el-button type="warning" @click="incrementA">+1</el-button>
 		<StateA ref="A"></StateA>
+		<el-button type="success" @click="incrementB">+1</el-button>
 		<StateB ref="B"></StateB>
 	</fieldset>
 

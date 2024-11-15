@@ -1,14 +1,14 @@
 <script setup lang="ts">
 	import {useCount} from './store.js';
 	import { ElTag } from 'element-plus';
-	const {globalCount,localCount,increment}=useCount();
+	const {globalState,localState,increment}=useCount();
 	defineExpose({
 		increment
 	})
 </script>
 <template>
-	<el-tag>localA:{{localCount}}</el-tag>
-	<el-tag>A-global:{{globalCount}}</el-tag>
+	<el-tag type="warning">local:{{localState.count}}</el-tag>
+	<el-tag type="primary">global:{{globalState.count}}</el-tag>
 </template>
 <style scoped>
 </style>
