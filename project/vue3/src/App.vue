@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 	import { ElMessageBox, ElTag, ElButton } from 'element-plus';
-	import '@/api/config'
+	import '@/api/textAxios'
 	const ping = async () => {
 		if (window.electronAPI && window.electronAPI.ping) {
 			let data = await window.electronAPI.ping();

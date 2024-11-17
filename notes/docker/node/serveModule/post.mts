@@ -28,9 +28,8 @@ export function POST(req: IncomingMessage,res: ServerResponse) {
 		}
 		//formData格式上传数据
 		else if(req.url==='/formDataUpload') {
-			let contentType=req.headers['content-type']||''
 			// 解析请求头，获取 boundary
-			const boundary='--'+contentType.split('=')[1];
+			const boundary = dataBuffer.toString().split('\r\n')[0]
 			// 声明一个数组,用来存放formdata中截取的键值对数据
 			let datas: Buffer[]=[];
 			//截取formdata中的每个键值对数据存放到datas

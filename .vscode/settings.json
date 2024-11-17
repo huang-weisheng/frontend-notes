@@ -23,6 +23,7 @@
 	"editor.cursorBlinking": "expand",
 	"explorer.confirmUndo": "verbose",
 	"editor.formatOnPaste": true,
+	"editor.stickyTabStops": true,
 	"html.format.wrapAttributes": "preserve",
 	"javascript.experimental.updateImportsOnPaste": true,
 	"javascript.format.semicolons": "insert",
