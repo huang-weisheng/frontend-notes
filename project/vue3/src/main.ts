@@ -5,7 +5,6 @@ import router from '@/router/router';
 import {globalProvideObjKey} from '@/types/provideInject';
 import {createPinia} from 'pinia';
 import {createApp,ref} from 'vue';
-import('./api/textAxios')
 //引入全局样式
 import './styles/global.css';
 
