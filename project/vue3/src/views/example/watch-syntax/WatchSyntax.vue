@@ -1,11 +1,10 @@
 <script setup lang="ts">
 	import { ElMessage, ElTag, ElButton } from 'element-plus';
-	import { fa } from 'element-plus/es/locales.mjs';
 	import { computed, ref, watch, watchEffect, type WatchStopHandle, type WatchOptions } from 'vue';
-	const simple = ref(1);
-	const complex = ref({ a: { b: { c: 999 } } });
-	const computedValue = computed<Object>(() => ([simple.value, complex.value]));
-	const getter = () => ([simple.value, complex.value]);
+	const shallow = ref(1);
+	const deep = ref({ a: { b: { c: 999 } } });
+	const computedValue = computed(() => ([shallow.value, deep.value]));
+	const getter = () => ([shallow.value, deep.value]);
 
 	//侦听器选项
 	const watchOptions: WatchOptions = {
@@ -17,7 +16,7 @@
 
 	//侦听简单类型
 	const unwatchSimple: WatchStopHandle = watch(
-		simple,
+		shallow,
 		function (newVal, oldVal) {
 			ElMessage.success('简单类型');
 		},
@@ -25,7 +24,7 @@
 	);
 	//侦听复杂类型,默认深层侦听,受deep属性影响
 	const unwatchComplex: WatchStopHandle = watch(
-		complex.value,
+		deep.value,
 		function (newVal, oldVal) {
 			ElMessage.success('复杂类型');
 		},
@@ -49,7 +48,7 @@
 	);
 	//侦听多个来源组,多个数据同时变化时只触发一次回调,默认浅侦听,受deep属性影响
 	const unwatchMultiple: WatchStopHandle = watch(
-		[simple, complex, computedValue, getter],
+		[shallow, deep, computedValue, getter],
 		function (newVal, oldVal) {
 			ElMessage.success('多个来源组');
 		},
@@ -102,11 +101,12 @@
 			<h3>Watch</h3>
 		</el-tag>
 		<label>
-			简单:<input v-model="simple" />
-			复杂:<input v-model="complex.a.b.c" />
+			浅层:<input v-model="shallow" />
+			深层:<input v-model="deep.a.b.c" />
 		</label>
-		<el-button type="primary" @click="createAsync" style="margin-left: 8px;">创建watchEffect</el-button>
-		<el-button type="primary" @click="stopWatch">停止watchEffect</el-button>
+		<el-tag type="danger">watchEffect</el-tag>
+		<el-button type="primary" link @click="createAsync" style="margin-left: 8px;">创建</el-button>
+		<el-button type="primary" link @click="stopWatch">停止</el-button>
 		<label v-if="unwatchEffect">
 			同步:<input v-model="syncValue" />
 			异步:<input v-model="asyncValue" />
@@ -116,6 +116,6 @@
 </template>
 <style scoped>
 	input {
-		width: 100px
+		width: 80px
 	}
 </style>

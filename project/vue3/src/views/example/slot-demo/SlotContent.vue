@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import VSlot from './SlotExit.vue';
-	import { ElTag,ElText } from 'element-plus';
+	import { ElTag,ElButton } from 'element-plus';
 </script>
 <template>
 	<fieldset>
@@ -10,11 +10,11 @@
 		<v-slot>
 			<!-- 未写插槽名,则使用默认值 default -->
 			<template #>
-				<el-text type="primary">#default:插槽内容</el-text>
+				<el-button link type="primary">插槽内容</el-button>
 			</template>
-			<!--'H':插槽名(可选),默认为'default',scope:(可选) 插槽出口传来的属性 -->
+			<!--content:插槽名(可选),默认为'default',scope:(可选) 插槽出口传来的属性 -->
 			<template #['content']="scope">
-				<el-text type="success">#content:{{ scope.message }}</el-text>
+				<el-button link type="success" plain>来自:{{ scope.message }}</el-button>
 			</template>
 		</v-slot>
 	</fieldset>

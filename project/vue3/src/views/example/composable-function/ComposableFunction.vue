@@ -14,7 +14,7 @@
 				组合式函数
 			</h3>
 		</el-tag>
-		Mouse position is at: {{x}}, {{y}}
+		mouse position: {{x}}, {{y}}
 	</fieldset>
 </template>
 <style scoped>

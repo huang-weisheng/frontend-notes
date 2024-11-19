@@ -14,7 +14,7 @@
 		</div>
 		<keep-alive />
 		<pinia-store />
-		<RouterVue />
+		<vue-router />
 	</div>
 </template>
 <script setup lang="ts">
@@ -27,11 +27,11 @@
 	import CustomDirective from '@/views/example/custom-directive/CustomDirective.vue';
 	import SlotVue from '@/views/example/slot-demo/SlotContent.vue';
 	import StateManagement from '@/views/example/state-management/StateManagement.vue';
-	import RouterVue from '@/views/example/RouterVue/index.vue';
+	import VueRouter from '@/views/example/vue-router/index.vue';
 	import PiniaStore from '@/views/example/pinia-store/PiniaStore.vue';
 </script>
 <style scoped>
 	.example {
-		width: 1000px;
+		width: 800px;
 	}
 </style>

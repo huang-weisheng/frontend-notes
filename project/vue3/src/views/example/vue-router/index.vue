@@ -9,9 +9,9 @@
 		router.push({
 			name: 'RouteA',
 			query: {
-				name: 'AAA'
+				query: 'AAA'
 			},
-			params: {id: 'AAA'}
+			params: { params: 'AAA'}
 		});
 	}
 	function pushToB() {
@@ -27,13 +27,13 @@
 </script>
 <template>
 	<fieldset>
-		<legend>
-			<el-tag type="danger">
-				<h2>router</h2>
-			</el-tag>
-			<el-button type="primary" @click="pushToB">RouteB</el-button>
-			<el-button type="primary" @click="pushToA">RouteA</el-button>
-		</legend>
+		<el-tag type="danger">
+			<h3>router</h3>
+		</el-tag>
+		<el-button type="primary" @click="pushToA">RouteA</el-button>
+		<el-button type="primary" @click="pushToB">RouteB(命名视图)</el-button>
 		<router-view></router-view>
+		<router-view name="B1"></router-view>
+		<router-view name="B2"></router-view>
 	</fieldset>
 </template>
