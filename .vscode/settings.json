@@ -75,5 +75,7 @@
 	"workbench.editor.wrapTabs": true,
 	"workbench.list.smoothScrolling": true,
 	"workbench.activityBar.location": "top",
-	"window.title": "${rootNameShort}"
+	"window.title": "${rootNameShort}",
+	"explorer.compactFolders": false,
+	"scm.compactFolders": false
 }

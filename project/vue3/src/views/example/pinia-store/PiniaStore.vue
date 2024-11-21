@@ -42,11 +42,9 @@
 		<el-tag type="danger">
 			<h3>pinia</h3>
 		</el-tag>
-		<p>
-			<el-button type="primary" @click="accessStore()">accessStore</el-button>
-			<el-button type="primary" @click="patchByObject()">patchByObject</el-button>
-			<el-button type="primary" @click="patchByFunction()">patchByFunction</el-button>
-		</p>
+		<el-button type="primary" @click="accessStore()">accessStore</el-button>
+		<el-button type="primary" @click="patchByObject()">patchByObject</el-button>
+		<el-button type="primary" @click="patchByFunction()">patchByFunction</el-button>
 		<span>count is:{{store.count}}</span>
 	</fieldset>
 

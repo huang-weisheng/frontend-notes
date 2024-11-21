@@ -3,11 +3,37 @@ import exampleRoutes from './example';
 
 const router=createRouter({
 	//使用history模式,import.meta.env.BASE_URL 为部署应用时的基本 URL,由 base 配置项决定。
-	//history: createWebHistory(import.meta.env.BASE_URL),
+	history: createWebHistory(import.meta.env.BASE_URL),
 
 	//使用hash模式
-	history: createWebHashHistory(),
+	// history: createWebHashHistory(),
 
+	//滚动行为
+	scrollBehavior(to, from, savedPosition) {
+		//模拟 “滚动到锚点” 的行为：
+		if (to.hash) {
+			//返回promise延迟滚动,当有路由过渡效果时要注意是否可以获取到元素
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve({ 
+						el: to.hash,
+						//平滑滚动
+						behavior: 'smooth',
+						//相对偏移
+						top: 100,
+						left: 0,
+					});
+				}, 500);
+			})
+		};
+		//也可以直接返回一个对象
+		return {
+			el:'#app',
+			left: 0,
+			top: 0,
+			behavior: 'smooth',
+		};
+	},
 	routes: [
 		{
 			path: '/',
@@ -19,7 +45,9 @@ const router=createRouter({
 			],
 			redirect: '/example'
 		},
-		exampleRoutes
+		exampleRoutes,
+		// 将匹配所有内容并将其放在 `route.params.pathMatch` 下
+		{ path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/error/404.vue') },
 	]
 });
 
