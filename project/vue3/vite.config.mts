@@ -101,24 +101,20 @@ export default defineConfig(({ command, mode }) => {
 						proxy.on('proxyReq', function (proxyReq, req, res) {
 							const proxyReqHeaders = proxyReq.getHeaders();
 							const originHeaders = req.headers;
-
 							//移除请求头
 							proxyReq.removeHeader('Custom-To-Server');
 							//添加请求头
 							proxyReq.setHeader('proxy-to-server', 'Proxy-Header');
-							
 							const newProxyReqHeaders = proxyReq.getHeaders();
 						});
 						//这里可以配置代理后响应给浏览器的响应头
 						proxy.on('proxyRes', (proxyRes, req, res) => {
 							const proxyResHeaders = { ...proxyRes.headers };
 							const originHeaders = { ...req.headers };
-
 							//操作返回给浏览器原请求的响应头
 							proxyRes.headers["Proxy-To-Browser"] = "Proxy-Header";
 							proxyRes.headers["Proxy-To-Delete"] = "Delete-Header";
 							delete proxyRes.headers['Proxy-To-Delete'];
-
 							const newProxyResHeaders = { ...proxyRes.headers };
 						});
 					}

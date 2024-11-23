@@ -45,7 +45,14 @@
 		}
 	}
 	//删除路由C
-	const removeRouteC = () => router.removeRoute('RouteC');
+	const removeRouteC = () => {
+		if (router.hasRoute('RouteC')) {
+			router.removeRoute('RouteC');
+			ElMessage.success('删除路由C成功');
+		} else {
+			ElMessage.error('路由C不存在');
+		}	
+	};
 	//获取所有路由
 	const getRoutes = () => console.log(router.getRoutes());
 </script>

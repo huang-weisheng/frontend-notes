@@ -6,9 +6,7 @@
   ],
   "compilerOptions": {
     "lib": ["ESNext"],
-    "target": "ESNext",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true,
     "module": "ESNext",
