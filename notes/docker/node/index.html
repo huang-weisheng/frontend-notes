@@ -4,33 +4,93 @@
 		<meta charset="UTF-8">
 		<title>request</title>
 		<link href="https://js.588ku.com/activity/20231024/images/vip_company_icon.png" rel="icon">
+		<style>
+			body {
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 20px;
+				font-family: Arial, sans-serif;
+			}
+			
+			.section {
+				margin: 20px 0;
+				padding: 15px;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+			}
+			
+			.section-title {
+				font-size: 18px;
+				font-weight: bold;
+				margin-bottom: 15px;
+				color: #333;
+			}
+			
+			button {
+				background: #4CAF50;
+				color: white;
+				border: none;
+				padding: 8px 15px;
+				border-radius: 4px;
+				cursor: pointer;
+				margin: 5px;
+				transition: background 0.3s;
+			}
+			
+			button:hover {
+				background: #45a049;
+			}
+			
+			label {
+				cursor: pointer;
+			}
+			
+			input[type="file"] {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
-		<button id="jsonRequest">JSON请求</button>
-		<button id="getTxt">流式GET文本</button>
-		<button id="stopText">中断流式文本请求</button>
-		<button>
-			<label for="uploadFile">二进制文件上传
-				<input type="file" name="file" id="uploadFile" hidden>
-			</label>
-		</button>
-		<button id="updateFormData">上传formData</button>
-		<button id="clearAllFile">清空文件</button>
-		<button id="connectWebsocket">连接websocket</button>
-		<button id="sendMessage">发送websocket消息</button>
-		<button id="sendFile">发送websocket文件</button>
-		<button id="closeWebsocket">断开websocket</button>
+		<div class="section">
+			<div class="section-title">基础请求</div>
+			<button id="jsonRequest">JSON请求</button>
+		</div>
+
+		<div class="section">
+			<div class="section-title">流式请求</div>
+			<button id="getTxtByStream">流式GET文本</button>
+			<button id="breakTxtStream">中断流式文本请求</button>
+		</div>
+
+		<div class="section">
+			<div class="section-title">文件上传</div>
+			<button>
+				<label for="uploadBinary">二进制文件上传
+					<input type="file" name="file" id="uploadBinary" hidden>
+				</label>
+			</button>
+			<button id="uploadFormData">上传formData</button>
+			<button id="clearAllFile">清空文件</button>
+		</div>
+
+		<div class="section">
+			<div class="section-title">WebSocket通信</div>
+			<button id="connectWebsocket">连接websocket</button>
+			<button id="sendMessageByWebsocket">发送websocket消息</button>
+			<button id="sendFileByWebsocket">发送websocket文件</button>
+			<button id="closeWebsocket">断开websocket</button>
+		</div>
 	</body>
 </html>
 <script>
 	let jsonRequest=document.querySelector('#jsonRequest');
-	let getTxt=document.querySelector('#getTxt');
-	let stopText=document.querySelector('#stopText');
-	let uploadFile=document.querySelector('#uploadFile');
-	let updateFormData=document.querySelector('#updateFormData');
+	let getTxtByStream=document.querySelector('#getTxtByStream');
+	let breakTxtStream=document.querySelector('#breakTxtStream');
+	let uploadBinary=document.querySelector('#uploadBinary');
+	let uploadFormData=document.querySelector('#uploadFormData');
 	let clearAllFile=document.querySelector('#clearAllFile');
-	let sendMessage=document.querySelector('#sendMessage');
-	let sendFile=document.querySelector('#sendFile');
+	let sendMessageByWebsocket=document.querySelector('#sendMessageByWebsocket');
+	let sendFileByWebsocket=document.querySelector('#sendFileByWebsocket');
 	let connectWebsocket=document.querySelector('#connectWebsocket');
 	let closeWebsocket=document.querySelector('#closeWebsocket');
 	jsonRequest.onclick=() => {
@@ -40,12 +100,12 @@
 			body: JSON.stringify({type: "json"})
 		})
 	}
-	getTxt.onclick=async function() {
+	getTxtByStream.onclick=async function() {
 		//AbortController 接口表示一个控制器对象，允许你根据需要中止一个或多个 Web 请求。
 		let controller=new AbortController();
 		//返回一个 AbortSignal 对象实例，它可以用来 with/abort 一个 Web（网络）请求
 		const signal=controller.signal;
-		stopText.onclick=() => {
+		breakTxtStream.onclick=() => {
 			//中断请求,将不再处理服务器返回的数据
 			controller.abort();
 		};
@@ -68,10 +128,10 @@
 			console.log('流式获取:    '+txt);
 		}
 	};
-	uploadFile.onchange=() => {
-		let file=uploadFile.files[0];
+	uploadBinary.onchange=() => {
+		let file=uploadBinary.files[0];
 		file.arrayBuffer().then(arrayBuffer => {
-			fetch('http://localhost:666/binaryUpload',{
+			fetch('/binaryUpload',{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/octet-stream',
@@ -86,7 +146,7 @@
 				});
 		});
 	};
-	updateFormData.onclick=() => {
+	uploadFormData.onclick=() => {
 		let file=document.createElement('input');
 		file.type='file';
 		file.onchange=(e) => {
@@ -107,23 +167,23 @@
 	};
 	connectWebsocket.onclick=() => {
 		if(window.ws) return
-		//protocol 子协议,提交给服务端,可以作为用户标识字段,可以使用[string1,string2]方式传多个
-		let protocol=['hyx','jyb'];
-		window.ws=new WebSocket('ws://'+location.host,protocol);
+		//第二个参数: 子协议;提交给服务端,可以是字符串,也可以是字符串数组
+		//子协议可以不传,但如果传了服务端必须从中选择一个,否则无法连接
+		window.ws=new WebSocket('ws://'+location.host, ['hyx', 'jyb'] );
 		//readyState返回当前 WebSocket 的链接状态，只读。 0:正在链接中;1:已经链接并且可以通讯;2:连接正在关闭;3:连接已关闭或者没有链接成功。
 		// console.log ( ws.readyState );
 		ws.onopen=(e) => {
 			//ws.protocol 属性获取服务端选择的子协议。
 			console.log('clientOpen:protocol=',ws.protocol);
-			sendMessage.onclick=() => {
+			sendMessageByWebsocket.onclick=() => {
 				ws.send(ws.protocol+'客户端发送的消息');
 				//bufferedAmount 返回已经被send()方法放入队列中但还没有被发送到网络中的数据的字节数。一旦队列中的所有数据被发送至网络，则该属性值将被重置为 0。
-				console.log(ws.bufferedAmount);
+				console.log('待发送',ws.bufferedAmount);
 				setTimeout(() => {
-					console.log(ws.bufferedAmount);
-				},0);
+					console.log('待发送',ws.bufferedAmount);
+				},100);
 			};
-			sendFile.onclick=() => {
+			sendFileByWebsocket.onclick=() => {
 				const fileInput=document.createElement('input');
 				fileInput.type='file';
 				fileInput.onchange=async () => {

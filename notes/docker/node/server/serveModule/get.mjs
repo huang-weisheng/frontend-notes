@@ -1,16 +1,22 @@
 
-import path from 'path';
-import fs from 'fs';
-import {type IncomingMessage,type ServerResponse} from 'http';
-// 使用 ESM 时获取当前模块的目录路径
+import * as path from 'path';
+import * as fs from 'fs';
+//获取当前模块的目录路径
 const root=path.resolve();
-// 如果不是正确的请求，发送 404 Not Found 响应
-function notfound(res: ServerResponse) {
+/**
+ * 发送404响应
+ * @param res {http.ServerResponse} 响应对象
+*/
+function notfound(res) {
 	res.writeHead(404,{'Content-Type': 'text/plain;charset=utf-8'});
 	res.end('页面找不到');
 }
-
-export function GET(req: IncomingMessage,res: ServerResponse) {
+/**
+ * 处理GET请求
+ * @param req {http.IncomingMessage} 请求对象
+ * @param res {http.ServerResponse} 响应对象
+*/
+export function GET(req,res) {
 	//初始化模拟长时间请求的变量
 	let longRunningOperation;
 	if(req.url) {

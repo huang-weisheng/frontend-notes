@@ -1,11 +1,7 @@
 {
   "description": "",
-  "scripts": {
-    "serve": "nodemon --watch . --ext mts --exec \"tsc --outDir dist && node dist/serve.mjs\""
-  },
   "dependencies": {
-    "@types/node": "^20.12.12",
-    "mysql2": "^3.9.7",
-    "ws": "^8.17.0"
+    "mysql2": "^3.11.4",
+    "ws": "^8.18.0"
   }
 }

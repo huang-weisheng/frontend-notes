@@ -1,9 +1,9 @@
-import http from 'http';
-import {createWebsocketServer} from './serveModule/websocketServe.mjs';
+import * as http from 'http';
+import {createWebsocketServer} from './serveModule/websocket.mjs';
 import {GET} from './serveModule/get.mjs';
 import {POST} from './serveModule/post.mjs';
 import {DELETE} from './serveModule/delete.mjs';
-const port=678;
+const port=88;
 //定义处理请求方法的映射
 const RequestMap={
 	GET,
@@ -12,9 +12,8 @@ const RequestMap={
 };
 // 创建 HTTP 服务器
 const server=http.createServer((req,res) => {
-
 	// 设置允许所有来源访问
-	// res.setHeader('Access-Control-Allow-Origin','*');
+	res.setHeader('Access-Control-Allow-Origin','*');
 	// 指定允许的 HTTP 请求方法
 	res.setHeader('Access-Control-Allow-Methods','*');
 	//设置允许所有的请求头

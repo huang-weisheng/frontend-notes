@@ -1,25 +1,11 @@
 #!/bin/bash
 
-# 编译 TypeScript
-tsc --outDir dist
+# 处理容器退出
+# 捕获 SIGTERM 信号
+trap 'echo "接收到 SIGTERM 信号,正在优雅退出..."; exit 0' SIGTERM
 
-# 运行编译后的 JavaScript 文件, & 符号用于将命令放入后台执行
-node ./dist/serve.mjs &
+# 捕获 SIGINT 信号 
+trap 'echo "接收到 SIGINT 信号,正在优雅退出..."; exit 0' SIGINT
 
-# 获取 Node.js 进程的 PID
-NODE_PID=$!
-
-# 定义一个函数来处理退出信号
-function graceful_shutdown {
-  echo "Received SIGTERM, shutting down gracefully..."
-  kill -SIGTERM "$NODE_PID"
-  wait "$NODE_PID"
-  echo "Node.js process has exited."
-  exit 0
-}
-
-# 捕捉 SIGTERM 和 SIGINT 信号，并调用 graceful_shutdown
-trap graceful_shutdown SIGTERM SIGINT
-
-# 等待 Node.js 进程结束
-wait "$NODE_PID"
+# 运行编译后的 JavaScript 文件,表示作为后台进程运行
+node ./server/serve.mjs 

@@ -1,13 +1,16 @@
-import path from 'path';
-import fs from 'fs';
-import {type IncomingMessage,type ServerResponse} from 'http';
-
+import * as path from 'path';
+import * as fs from 'fs';
+//获取当前模块的目录路径	
 const root=path.resolve();
-
-export function POST(req: IncomingMessage,res: ServerResponse) {
-	let chunks: Uint8Array[]=[];
+/**
+ * 处理POST请求
+ * @param req {http.IncomingMessage} 请求对象
+ * @param res {http.ServerResponse} 响应对象
+*/
+export function POST(req,res) {
+	let chunks=[];
 	// 监听请求的 'data' 事件，收集上传的数据块
-	req.on('data',(chunk: Uint8Array) => {
+	req.on('data',chunk => {
 		chunks.push(chunk);
 	});
 	// 监听请求完成事件，处理完整的上传数据
@@ -31,7 +34,7 @@ export function POST(req: IncomingMessage,res: ServerResponse) {
 			// 解析请求头，获取 boundary
 			const boundary = dataBuffer.toString().split('\r\n')[0]
 			// 声明一个数组,用来存放formdata中截取的键值对数据
-			let datas: Buffer[]=[];
+			let datas=[];
 			//截取formdata中的每个键值对数据存放到datas
 			let preIndex=0;
 			let nextIndex=dataBuffer.indexOf(boundary,preIndex+1);
@@ -73,7 +76,11 @@ export function POST(req: IncomingMessage,res: ServerResponse) {
 		res.end('successfully');
 	});
 };
-
+/**
+ * 写入文件
+ * @param fileName {string} 文件名
+ * @param fileContent {Buffer} 文件内容
+*/
 function writeFile(fileName,fileContent) {
 	//创建文件夹路径
 	const folderPath=path.join(root,'uploads');

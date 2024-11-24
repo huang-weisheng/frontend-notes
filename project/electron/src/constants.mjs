@@ -1,6 +1,6 @@
 
 import {app} from 'electron';
-import * as path from 'path';
+import path from 'path';
 
 /** exe的文件路径,便携式应用的特定环境变量。 */
 export const PORTABLE_APP_PATH=process.env.PORTABLE_EXECUTABLE_FILE;

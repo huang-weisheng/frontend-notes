@@ -1,8 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import {type IncomingMessage,type ServerResponse} from 'http';
+import * as fs from 'fs';
+import * as path from 'path';
 const folderPath=path.join(path.resolve(),'uploads');
-export function DELETE(req: IncomingMessage,res: ServerResponse) {
+/**
+ * 删除uploads目录下所有文件
+ * @param req {http.IncomingMessage} 请求对象
+ * @param res {http.ServerResponse} 响应对象
+*/
+export function DELETE(req,res) {
 	fs.rm(folderPath,{force: true,recursive: true},err => {
 		if(err) {
 			res.writeHead(500,{'Content-Type': 'text/plain'});

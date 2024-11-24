@@ -1,3 +1,21 @@
+# Docker
+
+## 设置代理
+
+打开代理工具 tun模式 即可代理docker软件
+
+## Docker 容器会在主进程结束时停止。
+
+## 容器退出时,捕获SIGTERM和SIGINT信号,优雅退出  
+
+在启动脚本加上如下代码
+```bash
+# 捕获 SIGTERM 信号
+trap 'echo "接收到 SIGTERM 信号,正在优雅退出..."; exit 0' SIGTERM
+
+# 捕获 SIGINT 信号 
+trap 'echo "接收到 SIGINT 信号,正在优雅退出..."; exit 0' SIGINT
+```
 
 ## Dockerfile常用字段
 
@@ -18,19 +36,19 @@ COPY . /
 # WORKDIR: 设置容器中命令执行的工作目录，后续命令都会在该目录下执行。
 WORKDIR /app
 
-# RUN: 在镜像构建过程中执行命令，比如安装软件包、运行脚本等。
+# RUN: 构建过程中在镜像内执行命令，比如安装软件包、运行脚本等。
 RUN npm config set registry http://registry.npm.taobao.org
-RUN npm i -g typescript
 
 # 声明容器运行时将要监听的端口声明容器运行时将要监听的端口,仅仅是一个文档标记,声明后客户端界面可配置映射端口。
 EXPOSE 666
 
-# ENV 设置环境变量。这些环境变量将会在容器内部生效
+# ENV 设置容器运行的环境变量。
 ENV MYSQL_ROOT_PASSWORD 123456
 
-# CMD ["可执行文件", "参数1", "参数2", ...] 定义容器启动时的默认执行命令。镜像构建过程中必须存在至少一个,子镜像覆盖父镜像CMD命令
-CMD ["./start.sh"]
-
+# 最好明确确指定可执行文件,不要将.sh等脚本写在第一个参数
+# CMD ["可执行文件", "参数1", "参数2", ...] 定义启动容器时执行的命令。
+# 镜像构建过程中必须存在至少一个,子镜像覆盖父镜像CMD命令
+CMD ["/bin/bash","start.sh"]
 ```
 
 ## 构建docker镜像
@@ -46,18 +64,19 @@ CMD ["./start.sh"]
 ## 基于镜像启动一个docker容器
 
 ```bash
-docker run -d -p 667:666 --name node_container -v C:\Users\HuangWeiSheng\Desktop\my-vue3\notes\docker\node\app:/app -w /app  node:v1.0
+docker run -d -p 678:88 --name node_server -e NAME=HYX -v "$(pwd)/app:/app" -w /app  node:v1.0
 ```
 
 - `docker run` 基于镜像启动一个容器。
 - `-d` 后台方式启动
-- `-p 667:666`  端口映射  <主机端口>:<容器端口>
-- `-w /app`  指定工作目录(WORKDIR)为 /app
-- `--name node_container`  容器名:node_container
-- `node:v1.0` 要启动的镜像名称及版本号.也可以使用镜像ID
-- `-v` 目录挂载, 可以使用多个 -v 参数挂载多个目录,
-	- bind mount 方式: 将宿主机的目录映射到docker容器 <宿主机绝对路径>:<docker容器路径>
-	- volume 方式:  由容器创建和管理，创建在宿主机，可挂到多个容器上 <只需一个名字>:<docker容器路径>
+- `-p` 端口映射  <主机端口>:<容器端口>
+- `-w`  指定工作目录(WORKDIR)
+- `--name`  指定容器名
+- `-e` 设置容器环境变量
+- `-v` 挂载目录或者文件, 可以重复声明挂载多个
+	- bind mount 方式: <宿主机绝对路径>:<docker容器路径> 将宿主机目录挂载到容器
+	- volume 方式:  <只需一个名字>:<docker容器路径>  由容器创建和管理，创建在宿主机，可挂到多个容器上
+- `node:v1.0` 要启动的镜像名称及版本号.也可以使用镜像ID,如果本地不存在该镜像,则从远程仓库拉取
 
 ## docker镜像的导入和导出
 
@@ -153,7 +172,6 @@ Compose 会为每个项目创建默认网络，以便项目中的容器可以互
 - `docker-compose start`：启动已存在的容器。
 - `docker-compose stop`：停止运行中的容器。
 - `docker-compose logs`：查看服务输出的日志。
-
 - `docker-compose up -d <service_name>`  启动指定服务
 - `docker-compose stop <service_name>`  停止指定服务
 - `docker-compose restart <service_name>`  重启指定服务
@@ -163,10 +181,10 @@ Compose 会为每个项目创建默认网络，以便项目中的容器可以互
 ## 启动命令
 
 ```bash
-docker-compose  up --build -p docker_compose  -d
+docker-compose -p docker_compose up --build -d
 ```
   - `--build` 无论镜像是否存在或是否有变化，都会强制重新构建镜像。
-  - `-p docker_compose` 设置项目名称 docker_compose,默认是当前目录名称。
+  - `-p` 设置项目名称,默认是当前目录名称。
   - `-d` 在后台运行容器。
 
 
@@ -189,43 +207,27 @@ services:
 
   # Node.js 应用服务
   node_app:
-    image: node_app:latest               # 指定 Node.js 镜像名称和标签
-    container_name: node_compose         # 指定容器的名称
-    ports:
-      - "1000:666"                       # 将主机端口映射到容器端口
+    image: node:v1.0 # 指定 Node.js 镜像名称和标签              
+    container_name: compose_node # 指定容器的名称       
+    ports: # 将主机端口映射到容器端口
+      - "678:88"                      
     volumes:
-      - ./node/app/:/app/                # 挂载主机目录到容器目录
-    build:
-      context: .                          # 使用当前目录作为上下文
-      dockerfile: ./node/Dockerfile      # 指定 Dockerfile 路径
-
-  # Nginx 服务
-  nginx_app:
-    image: nginx:latest                  # 指定 Nginx 镜像名称和标签
-    container_name: nginx_compose        # 指定容器的名称
-    ports:
-      - "1001:80"                        # 将主机端口映射到容器端口
-    volumes:
-      - ./nginx/:/nginx/                 # 挂载主机目录到容器目录
-    command:							 # 自定义启动命令
-      - "/bin/bash"
-      - "-c"
-      - "cp -f /nginx/default.conf /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+      - node/:/app/  # 挂载主机目录到容器目录              
+    build: # 有 build 字段:根据 Dockerfile 构建新镜像;没有 build 字段:使用 image 字段指定的镜像
+      context: node  # 使用node目录作为构建上下文
+      dockerfile: Dockerfile # 指定 Dockerfile 路径,相对于context路径
 
   # MySQL 服务
   mysql_app:
-    image: mysql_app:latest              # 指定 MySQL 镜像名称和标签
-    container_name: mysql_compose        # 指定容器的名称
-    ports:
-      - "1002:3306"                      # 将主机端口映射到容器端口
-    environment:
-      MYSQL_ROOT_PASSWORD: 000000        # 设置 MySQL root 用户密码
+    image: mysql:latest  # 指定 MySQL 镜像名称和标签            
+    container_name: compose_mysql # 指定容器的名称       
+    ports: # 将主机端口映射到容器端口
+      - "3307:3306"                      
+    environment: # 设置环境变量
+      MYSQL_ROOT_PASSWORD: "000000"    # 设置 MySQL root 用户密码
     volumes:
-      - ./mysql/mysql_docker_database:/var/lib/mysql/  # 挂载主机目录到容器目录
-    build:
-      context: .                          # 使用当前目录作为上下文
-      dockerfile: ./mysql/Dockerfile     # 指定 Dockerfile 路径
-
+      - mysql_data:/var/lib/mysql/  # 挂载主机目录到容器目录
 # 定义卷
 volumes:
-  mysql_data:                             # 定义名为 mysql_data 的卷
+  mysql_data: # 定义名为 mysql_data 的卷
+```
