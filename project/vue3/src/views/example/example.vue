@@ -27,7 +27,10 @@
 			</div>
 			<keep-alive />
 			<pinia-store />
-			<vue-router />
+			<div style="display: flex;">
+				<vue-router />
+				<async-components />
+			</div>
 		</fieldset>
 	</div>
 </template>
@@ -43,6 +46,7 @@
 	import StateManagement from '@/views/example/state-management/StateManagement.vue';
 	import VueRouter from '@/views/example/vue-router/VueRouter.vue';
 	import PiniaStore from '@/views/example/pinia-store/PiniaStore.vue';
+	import AsyncComponents from '@/views/example/async-components/AsyncComponents.vue';
 	import { ElMessageBox, ElTag, ElButton, ElText } from 'element-plus';
 
 	const ping = async () => {

@@ -2,8 +2,8 @@
 
 默认服务名: mysql80。
 
-	启动MySQL服务: net start mysql80
-	停止MySQL服务: net stop mysql80
+启动MySQL服务: net start mysql80
+停止MySQL服务: net stop mysql80
 
 ## 客户端连接
 
@@ -14,64 +14,49 @@
 		* -P : MySQL服务端口号,如果未提供此参数,使用 MySQL 默认的端口 3306
 		* -u : 指定连接 MySQL 服务器时使用的用户名。-u root 表示使用用户名为 "root" 的用户连接。
 		* -p : 使用密码登录: 123456
-		* []内为可选参数,如果需要连接远程的MySQL,需要加上这两个参数来指定远程主机IP、端口,如果连接本地的MySQL,则无需指定这两个参数
 
 ## SQL分类
 
-### DDL
+### DDL (数据定义语言)
 
 Data Definition Language,数据定义语言,用来定义数据库对象(数据库,表,字段) 。
 
 #### 数据库操作
 
 ```sql
-查询所有数据库:
-	show databases;
-查询当前连接所使用的数据库名称:
-	select database();
-删除数据库:
-	drop database [ if exists ] 数据库名 ;
-切换到数据库:
-	use 数据库名;
-创建数据库:
-	create database [ if not exists ] 数据库名 [ default charset 字符集 ] [ collate 排序规则 ]
+查询所有数据库: `show databases;`
+查询当前连接所使用的数据库名称: `select database();`
+删除数据库: `drop database [ if exists ] 数据库名 ;`
+切换到数据库:` use 数据库名;`
+创建数据库:` create database [ if not exists ] 数据库名 [ default charset 字符集 ] [ collate 排序规则 ]`
 		- [ if not exists ] 参数表示如果数据库不存在, 则创建该数据库，如果存在，则不创建
 		- [ default charset 字符集 ] 默认是 default charset utf8mb4
 ```
 
-##### 表操作
+#### 表操作
 
 (长度) 字段的是否可选取决于数据类型以及数据库管理系统的要求。
+
 ```sql
-查询当前数据库所有表
-	show tables;
-查看到指定表结构:表的字段,字段的类型、是否可以为NULL,是否存在默认值等信息
-	desc 表名 ;
-查看建表语句
-	show create table 表名 ;
-添加表字段
-	ALTER TABLE 表名 ADD 字段名 类型 [(长度)] [ COMMENT 注释 ] [ 约束 ] ;
-修改表字段数据类型
-	ALTER TABLE 表名 MODIFY 字段名 新数据类型 [(长度)];
-修改表字段名和字段类型
-	ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型 [(长度)] [ COMMENT 注释 ] [ 约束 ];
-删除字段
-	ALTER TABLE 表名 DROP 字段名;
-修改表名
-	ALTER TABLE 表名 RENAME TO 新表名;
-删除整个表: [ IF EXISTS ]  如果存在
-	DROP TABLE [ IF EXISTS ] 表名;
-清空表中的所有数据，但保留表的结构、索引、约束等定义。
-	TRUNCATE TABLE 表名;
+查询当前数据库所有表: SHOW TABLES;
+查看到指定表结构:表的字段,字段的类型、是否可以为NULL,是否存在默认值等信息: DESC 表名 ;
+查看建表语句: SHOW CREATE TABLE 表名 ;
+添加表字段: ALTER TABLE 表名 ADD 字段名 类型 [(长度)] [ COMMENT 注释 ] [ 约束 ] ;
+修改表字段数据类型: ALTER TABLE 表名 MODIFY 字段名 新数据类型 [(长度)];
+修改表字段名和字段类型: ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型 [(长度)] [ COMMENT 注释 ] [ 约束 ];
+删除字段: ALTER TABLE 表名 DROP 字段名;
+修改表名: ALTER TABLE 表名 RENAME TO 新表名;
+删除整个表: DROP TABLE [ IF EXISTS ] 表名;
+清空表中的所有数据，但保留表的结构、索引、约束等定义。TRUNCATE TABLE 表名;
 创建表结构;  [] 内为可选参数，最后一个字段后面没有逗号
 	CREATE TABLE 表名(
 	字段1 字段1类型 [ COMMENT 字段1注释 ],
 	字段2 字段2类型 [ COMMENT 字段2注释 ],
 	字段n 字段n类型 [ COMMENT 字段n注释 ]
-	) [ COMMENT 表注释 ] ;
+	) [ COMMENT 表注释 ];
 ```
 
-##### 表操作-数据类型
+#### 数据类型
 
 MySQL中的数据类型有很多,主要分为三类：数值类型、字符串类型、日期时间类型。
 
@@ -81,18 +66,18 @@ MySQL中的数据类型有很多,主要分为三类：数值类型、字符串�
 3. 日期时间类型
 
 
-### DML
+### DML (数据操作语言)
 
-DML英文全称是Data Manipulation Language(数据操作语言)，用来对数据库中表的数据记录进
-行增、删、改操作。
+DML英文全称是Data Manipulation Language(数据操作语言)，用来对数据库中表的数据记录进行增、删、改操作。
+
 ```sql
 添加数据:向数据库表中插入新的行或记录(指定字段), 字符串和日期型数据应该包含在引号中。
 	INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...);
-添加数据:  将所有值按照表中字段的顺序插入,字符串和日期型数据应该包含在引号中。
+添加数据:将所有值按照表中字段的顺序插入,字符串和日期型数据应该包含在引号中。
 	INSERT INTO 表名 VALUES (值1, 值2, ...);
-批量添加数据:部分字段,  字符串和日期型数据应该包含在引号中。
+批量添加数据:部分字段,字符串和日期型数据应该包含在引号中。	
 	INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...), (值1, 值2, ...);
-批量添加数据:全部字段,  字符串和日期型数据应该包含在引号中。
+批量添加数据:全部字段,字符串和日期型数据应该包含在引号中。
 	INSERT INTO 表名 VALUES (值1, 值2, ...), (值1, 值2, ...), (值1, 值2, ...);
 修改数据: 如果没有条件，则会修改整张表的所有数据。
 	UPDATE 表名 SET 字段名1 = 值1 , 字段名2 = 值2  [ WHERE 条件 ];
@@ -100,7 +85,7 @@ DML英文全称是Data Manipulation Language(数据操作语言)，用来对数�
 	DELETE FROM 表名 [ WHERE 条件 ] ;
 ```
 
-### DQL
+### DQL (数据查询语言)
 
 DQL英文全称是Data Query Language(数据查询语言)，数据查询语言，用来查询数据库中表的记
 录。
@@ -231,94 +216,57 @@ select * from 表名 limit 10;
 select * from 表名 limit 10,10;
 ```
 
-#### DQL执行顺序
+#### 执行顺序
 
-1. **FROM** 子句：
-   - 首先，数据库从指定的表中检索数据。
+1. **FROM** 子句： 首先，数据库从指定的表中检索数据。
+2. **WHERE** 子句： 数据库应用 WHERE 子句中的条件筛选出满足条件的数据。
+3. **GROUP BY** 子句： 如果有 GROUP BY 子句，数据根据指定的列进行分组。
+4. **HAVING** 子句： 如果有 HAVING 子句，数据库应用 HAVING 子句中的条件筛选出满足条件的分组。
+5. **SELECT** 子句： 数据库从分组的数据中选择指定的列或表达式。
+6. **ORDER BY** 子句： 如果有 ORDER BY 子句，数据库根据指定的列对结果进行排序。
+7. **LIMIT** 子句： 最后，如果有 LIMIT 子句，数据库根据指定的行数限制结果集的大小。
 
-2. **WHERE** 子句：
-   - 数据库应用 WHERE 子句中的条件筛选出满足条件的数据。
+### DCL (数据控制语言)
 
-3. **GROUP BY** 子句：
-   - 如果有 GROUP BY 子句，数据根据指定的列进行分组。
-
-4. **HAVING** 子句：
-   - 如果有 HAVING 子句，数据库应用 HAVING 子句中的条件筛选出满足条件的分组。
-
-5. **SELECT** 子句：
-   - 数据库从分组的数据中选择指定的列或表达式。
-
-6. **ORDER BY** 子句：
-   - 如果有 ORDER BY 子句，数据库根据指定的列对结果进行排序。
-
-7. **LIMIT** 子句：
-   - 最后，如果有 LIMIT 子句，数据库根据指定的行数限制结果集的大小。
-
-### DCL
-
-DCL英文全称是Data Control Language(数据控制语言)，用来管理数据库用户、控制数据库的访
-问权限。
+DCL英文全称是Data Control Language(数据控制语言)，用来管理数据库用户、控制数据库的访问权限。
+**用户数据都放在mysql数据库的user表中,所以对用户的管理其实就是对user表中数据的操作。**
 
 #### 管理用户
 
-* Host代表当前用户访问的主机, 如果为localhost, 仅代表只能够在当前本机访问，是不可以
-远程访问的。
-* User代表的是访问该数据库的用户名。在MySQL中需要通过Host和User来唯一标识一个用户。
-
-
 ```sql
-查询用户
-select * from mysql.user;
-创建用户: 'localhost' 表示只允许本地连接，'%' 表示允许来自任何主机的连接。
-CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+查询用户: 
+	SELECT User, Host FROM mysql.user;
+创建用户: 'localhost' 表示只允许本地连接, '%' 表示允许来自任何主机的连接。
+	CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
 修改用户密码:
-mysql_native_password: 使用经典的用户名和密码进行身份验证。这是 MySQL 中最常用的认证插件。
-caching_sha2_password: 使用 SHA-256 加密的用户名和密码进行身份验证。这是 MySQL 8.0 中默认的身份验证插件。
-sha256_password: 类似于 caching_sha2_password,使用 SHA-256 加密进行身份验证。这是 MySQL 5.7 中引入的一种身份验证插件。
-ALTER USER '用户名'@'主机名' IDENTIFIED WITH mysql_native_password BY '新密码' ;
-删除用户
-DROP USER '用户名'@'主机名' ;
+	ALTER USER '用户名'@'主机名' IDENTIFIED WITH mysql_native_password BY '新密码' ;
+	- mysql_native_password: 使用经典的用户名和密码进行身份验证。这是 MySQL 中最常用的认证插件。
+	- caching_sha2_password: 使用 SHA-256 加密的用户名和密码进行身份验证。这是 MySQL 8.0 中默认的身份验证插件。
+	- sha256_password: 类似于 caching_sha2_password,无缓存
+删除用户:
+	DROP USER '用户名'@'主机名' ;
 ```
 
 #### 权限控制
 
-MySQL中定义了很多种权限,但是常用的就以下几种:
+多个权限之间,使用逗号分隔。授权时, 数据库名和表名可以使用 * 进行通配,代表所有:
 
-- **ALL, ALL PRIVILEGES**：表示所有权限，包括 SELECT、INSERT、UPDATE、DELETE、ALTER、DROP、CREATE 等所有权限。
-
-- **SELECT**：允许用户查询数据，但不能修改或删除数据。
-
+- **ALL**：表示所有权限,包括 SELECT、INSERT、UPDATE、DELETE、ALTER、DROP、CREATE 等所有权限。
+- **SELECT**：允许用户查询数据。
 - **INSERT**：允许用户插入新数据到表中。
-
 - **UPDATE**：允许用户修改表中现有数据。
-
 - **DELETE**：允许用户删除表中的数据。
-
 - **ALTER**：允许用户修改表的结构，如添加、删除列等操作。
-
 - **DROP**：允许用户删除数据库、表或视图。
-
 - **CREATE**：允许用户创建数据库、表或其他对象。
 
-多个权限之间,使用逗号分隔。授权时, 数据库名和表名可以使用 * 进行通配,代表所有
 ```sql
- 查询权限:
- SHOW GRANTS FOR '用户名'@'主机名' ;
-
- 授予权限:
- GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
-
- 撤销权限:
- REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
-
 查询 'heima'@'%' 用户的权限:
-show grants for 'heima'@'%';
-
+	SHOW GRANTS FOR 'heima'@'%';
 授予 'heima'@'%' 用户itcast数据库所有表的所有操作权限:
-grant all on itcast.* to 'heima'@'%';
-
+	GRANT ALL ON itcast.* TO 'heima'@'%';
 撤销 'heima'@'%' 用户的itcast数据库的所有权限:
-revoke all on itcast.* from 'heima'@'%';
+	REVOKE ALL ON itcast.* FROM 'heima'@'%';
 ```
 
 ## 函数
