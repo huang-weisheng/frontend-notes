@@ -6,7 +6,7 @@
 		// 使用ES模块
 		"module": "ESNext",
 		// 使用 Node.js 的模块解析策略
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		//允许你直接导入 JSON 文件作为模块。
 		"resolveJsonModule": true,
 		// 允许导入扩展名为 .ts 或 .tsx 的文件
@@ -30,6 +30,9 @@
 		"paths": {
 			"@/*": [
 				"src/*"
+			],
+			"/*": [
+				"public/*"
 			]
 		},
 		// 设置为空以避免意外包含不需要的类型

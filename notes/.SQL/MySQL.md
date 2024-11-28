@@ -60,10 +60,32 @@ Data Definition Language,数据定义语言,用来定义数据库对象(数据�
 
 MySQL中的数据类型有很多,主要分为三类：数值类型、字符串类型、日期时间类型。
 
-1. 数值类型
-	- DOUBLE 8bytes 双精度浮点数值
+1. 数值类型,声明为无符号则范围是 0 ~ 存储范围
+	- TINYINT 1bytes 小整数值 (-128,127)
+	- SMALLINT 2bytes 大整数值 (-32768,32767)
+	- INT/INTEGER 4bytes 大整数值 (-2147483648,2147483647)
+	- BIGINT 8bytes 极大整数值 (-9223372036854775808,9223372036854775807)
+	- FLOAT 4bytes 单精度浮点数值 (只能准确表示小数点前后最多 7 位左右的有效数字)
+		- 可以表示范围很大的数,但是七位数后的数字不准确
+	- DOUBLE 8bytes 双精度浮点数值 (只能准确表示小数点前后最多 15 位左右的有效数字)
+		- 可以表示范围很大的数,但是十五位数后的数字不准确
+	- DECIMAL(M, D) 指定精度:M(总位数),D(小数点后位数)
+		- 如果 M 和 D 被指定;整数部分最多有 𝑀 − 𝐷 位，小数部分最多有 𝐷 位。
 2. 字符串类型
+	- CHAR(M) 0-255bytes 定长字符串,M:固定长度,未用完部分用空格填充
+	- VARCHAR(M) 0-65535bytes 变长字符串,M:最大长度
+	- TINYTEXT 0-255bytes 短文本字符串
+	- TEXT 0-65535bytes 长文本数据
+	- MEDIUMTEXT 0-16777215bytes 中等长度文本数据
+	- LONGTEXT 0-4294967295bytes 极大文本数据
+	- ENUM(value1, value2, ...) 枚举类型,只能有一个枚举字符串值
+	- SET(value1, value2, ...) 字符串对象可以有零或多个SET成员,查询时值使用逗号连接
 3. 日期时间类型
+	- DATE 3bytes 日期值 YYYY-MM-DD
+	- TIME 3bytes 时间值或持续时间 HH:MM:SS
+	- YEAR 1bytes 年份值 YYYY
+	- DATETIME 8bytes 混合日期和时间值 YYYY-MM-DD HH:MM:SS
+	- TIMESTAMP 4bytes 混合日期和时间值,时间戳 YYYY-MM-DD HH:MM:SS
 
 
 ### DML (数据操作语言)

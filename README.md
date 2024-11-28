@@ -3,9 +3,6 @@
 ## 设置全局镜像源
 
 ```bash
-npm get registry #显示当前的镜像网址
-npm config set registry  #设为默认地址
-npm config set registry https://registry.npmmirror.com/ #更换淘宝的镜像网址
 npm install -g nrm #安装源管理工具
 nrm ls #查看所有的可用的源
 nrm use 源的名字 #切换到某个源
@@ -15,6 +12,7 @@ nrm use 源的名字 #切换到某个源
 
 1. 创建或编辑 .npmrc 文件
 2. 添加以下内容:
+
 ```bash
 registry=https://registry.npmmirror.com/
 ```

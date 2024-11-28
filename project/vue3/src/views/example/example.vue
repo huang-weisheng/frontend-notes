@@ -31,6 +31,7 @@
 				<vue-router />
 				<async-components />
 			</div>
+			<path-process />
 		</fieldset>
 	</div>
 </template>
@@ -47,8 +48,8 @@
 	import VueRouter from '@/views/example/vue-router/VueRouter.vue';
 	import PiniaStore from '@/views/example/pinia-store/PiniaStore.vue';
 	import AsyncComponents from '@/views/example/async-components/AsyncComponents.vue';
+	import PathProcess from '@/views/example/assets-process/AssetsProcess.vue';
 	import { ElMessageBox, ElTag, ElButton, ElText } from 'element-plus';
-
 	const ping = async () => {
 		if (window.electronAPI && window.electronAPI.ping) {
 			let data = await window.electronAPI.ping();

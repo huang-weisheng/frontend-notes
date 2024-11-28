@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import vitePluginInfo from './vite-plugins/vite-plugin-info.mjs';
@@ -9,6 +9,7 @@ export default defineConfig(({ command, mode }) => {
 	return {
 		mode: 'play',//指定项目运行的模式
 		base: '/web/',//公共基础路径。
+		publicDir: './public',//指定作为静态资源服务的文件夹	
 		//构建配置
 		build: {
 			outDir: 'dist',// 存放打包文件的目录
