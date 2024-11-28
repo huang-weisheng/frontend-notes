@@ -1,6 +1,4 @@
-
-const {ipcRenderer}=require('electron');
-// import {ipcRenderer} from 'electron';
+import {ipcRenderer} from 'electron';
 
 window.ping=() => ipcRenderer.invoke('ping');
 window.electronAPI={

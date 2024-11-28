@@ -11,7 +11,7 @@
 	"cursor.composer.cmdPFilePicker2": true,
 	"cursor.aipreview.enabled": true,
 	"cursor.general.enableShadowWorkspace": true,
-	"cursor.general.disableHttp2": true,
+	"cursor.general.disableHttp2": false,
 	"cursor.general.gitGraphIndexing": "enabled",
 	"cursor.preferNotificationsSameAsChat": true,
 	"editor.guides.bracketPairs": "active",

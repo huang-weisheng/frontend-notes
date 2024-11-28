@@ -1,5 +1,5 @@
 import {app,BrowserWindow,ipcMain,Menu,screen,session} from 'electron';
-import {createMainWindow} from './window/mainWindow.mjs';
+import {createMainWindow} from './windows/main/main.mjs';
 
 // app 模块，它控制应用程序的事件生命周期。
 app.whenReady().then(async () => {

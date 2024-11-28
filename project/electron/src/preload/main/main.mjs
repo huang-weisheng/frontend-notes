@@ -2,7 +2,7 @@
 // 启用渲染进程的上下文隔离后,需要通过 contextBridge 模块来安全地暴露 API 和与主进程通信。
 // 不开启渲染进程上下文隔离可以直接在预加载脚本中将变量挂载到window全局对象上
 // 必须关闭安全沙箱功能 webPreferences.sandbox , 预加载文件才可使用es语法
-const {ipcRenderer,contextBridge}=require('electron');
+import {ipcRenderer,contextBridge} from 'electron';
 
 for(const dependency of ['chrome','node','electron']) {
 	console.log(`${dependency}-version`,process.versions[dependency]);

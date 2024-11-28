@@ -1,6 +1,6 @@
-import {BrowserWindow} from 'electron';
 import path from 'path';
-import {ROOT_PATH,ASSETS_PATH} from '../constants.mjs'
+import {BrowserWindow} from 'electron';
+import {ROOT_PATH,ASSETS_PATH} from '../../constants.mjs'
 
 export const createMoadalWindow=(window) => {
 	const modalWindow= new BrowserWindow({
@@ -11,7 +11,7 @@ export const createMoadalWindow=(window) => {
 		//模态窗口,子窗口出现时父窗口禁用任何操作
 		modal: true,
 		webPreferences: {
-			preload: path.join(ROOT_PATH,'preload/modal.cjs'),
+			preload: path.join(ROOT_PATH,'preload/modal/modal.mjs'),
 			contextIsolation: false,
 			nodeIntegration: true,
 		}

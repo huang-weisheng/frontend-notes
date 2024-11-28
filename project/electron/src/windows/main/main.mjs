@@ -2,13 +2,11 @@ import {
 	app,BrowserWindow,Menu,Tray,nativeImage,dialog
 } from 'electron';
 import path from 'path';
-import {IS_DEV,ROOT_PATH,ASSETS_PATH} from '../constants.mjs';
-import {createMoadalWindow} from './modalWindow.mjs';
-const loadUrl='http://localhost:666/web/';
-const iconPath=IS_DEV? 'icon/apple.png':'icon/shield.png';
-//在 app 模块 ready 事件之后创建窗口。
+import {ROOT_PATH} from '../../constants.mjs';
+import {createMoadalWindow} from '../modal/modal.mjs';
+import {loadUrl,logo} from '../../config.mjs';
 /**
- * 创建窗口
+ * app 模块 ready 事件之后创建窗口。
  * @param {Object} screenInfo 屏幕信息
  * @returns {BrowserWindow} 窗口对象
  */
@@ -39,11 +37,11 @@ export const createMainWindow=async (screenInfo) => {
 		//是否显示系统标题栏
 		frame: true,
 		//窗口图标
-		icon: nativeImage.createFromPath(path.join(ASSETS_PATH,iconPath)),
+		icon: nativeImage.createFromPath(logo),
 		//webPreferences 是一个对象，用于配置 BrowserWindow 的Web内容属性。
 		webPreferences: {
 			// 指定预加载脚本。
-			preload: path.join(ROOT_PATH,'preload/main.cjs'),
+			preload: path.join(ROOT_PATH,'preload/main/main.mjs'),
 			// 渲染进程上下文隔离:开启后需要通过 contextBridge 模块安全地暴露 API 和与主进程通信。
 			contextIsolation: true,
 			// Node.js 集成: 默认 false,当启用 nodeIntegration 时，沙盒(sandbox)也会被禁用。
@@ -106,7 +104,7 @@ export const createMainWindow=async (screenInfo) => {
 								buttons: ['取消','确定'],
 								checkboxLabel: '勾选框信息',
 								checkboxChecked: true,
-								icon: path.join(ASSETS_PATH,iconPath),
+								icon: logo,
 								detail: '额外信息'
 							});
 							console.log(result);
@@ -163,7 +161,7 @@ export const createMainWindow=async (screenInfo) => {
 	/** 最小化到托盘 */
 	function minToTray(win) {
 		// 设置托盘以及图标,路径最好避免使用中文路径或者文件名
-		tray=new Tray(path.join(ASSETS_PATH,iconPath));
+		tray = new Tray(logo);
 		// 设置托盘菜单
 		tray.setContextMenu(Menu.buildFromTemplate([
 			{label: '退出',click: () => {app.quit();}}
