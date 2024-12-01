@@ -5,6 +5,7 @@
 	"description": "",
 	"type": "module",
 	"dependencies": {
+		"@vueuse/core": "^12.0.0",
 		"axios": "^1.7.8",
 		"echarts": "^5.5.1",
 		"element-plus": "^2.8.8",
