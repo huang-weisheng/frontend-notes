@@ -1,5 +1,8 @@
 {
   "description": "",
+  "scripts": {
+    "node:server": " nodemon --watch . --ext mts --exec \"tsc --outDir dist && node dist/serve.mjs\""
+  },
   "dependencies": {
     "mysql2": "^3.11.4",
     "ws": "^8.18.0"

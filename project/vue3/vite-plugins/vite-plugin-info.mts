@@ -20,33 +20,34 @@ export default function (options: Options = {}): Plugin {
 			// 返回 true 表示使用插件
 			return true;
 		},
-		enforce: 'post', // 在其他插件之后执行
-		/*  代码执行顺序
-			1. Alias
-			2. 带有 enforce: 'pre' 的用户插件
-			3. Vite 核心插件
-			4. 没有 enforce 值的用户插件
+		enforce: 'pre', 
+		/* enforce: 代码执行顺序
+			1. Alias 路径别名处理
+			2. enforce: 'pre' 的用户插件,此时源代码未编译
+			3. Vite 核心插件 (源代码解析,生成AST等)
+			4. 没有 enforce 值的用户插件,此时transform拿到的是编译后的代码
 			5. Vite 构建用的插件
-			6. 带有 enforce: 'post' 的用户插件
-			7. Vite 后置构建插件（最小化，manifest，报告）
+			6. enforce: 'post' 的用户插件,此时transform拿到的是编译后的代码
+			7. Vite 后置构建插件（压缩代码，生成最终文件，报告等）
 		*/
 		/** 解析虚拟模块ID */
 		resolveId(id) {
+			//如果引入的是虚拟模块,则返回解析后的虚拟模块ID
 			if (id === virtualModuleId) {
 				return resolvedVirtualModuleId;
 			}
 		},
 		/**调用 load 方法定义虚拟模块内容 */
 		load(id) {
+			//如果引入的是解析后的虚拟模块ID,则返回包含构建时间和作者信息的模块内容
 			if (id === resolvedVirtualModuleId) {
-				// 返回包含构建时间和作者信息的模块内容
 				return `
 					export const buildTime ='${buildStartTime}'
 					export const author = '${options.author}'
 				`;
 			}
 		},
-		/** 转换源代码 */
+		/** 转换源代码,受enforce影响,不同执行时机会拿到不同的代码*/
 		transform(code, id) {
 			//返回文件内容
 			return code;

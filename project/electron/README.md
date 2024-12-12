@@ -2,6 +2,17 @@
 
 
 # electron build 配置
+
+build.win.target 打包平台配置
+    - nsis 为安装包
+    - portable 为便携包
+    - appx 为appx包
+    - dmg 为dmg包
+    - mas 为mas包
+    - mas-x64 为mas-x64包
+    - mas-arm64 为mas-arm64包
+
+
 files字段不声明则打包当前目录所有文件,
 extraMetadata 允许打包时动态修改package.json中的字段,
 打包要包含 package.json,根据package.josn指定启动项目入口文件及版本等信息。

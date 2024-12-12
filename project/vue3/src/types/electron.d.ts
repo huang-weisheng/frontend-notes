@@ -5,6 +5,7 @@ declare global {
 		electronAPI?: {
 			ping?: () => Promise<string>;
 			setTitle?: (title: string) => void;
+			getServerUrl?: () => Promise<string>;
 		}
 	}
 }

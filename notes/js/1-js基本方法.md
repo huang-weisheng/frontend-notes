@@ -160,11 +160,11 @@ Object.defineProperty ( window , 'property' , {
 ## 简介
 
 - Proxy 对象用于创建一个对象的代理,从而实现基本操作的拦截和自定义(如属性查找、赋值、枚举、函数调用等)。
-- 代理会将所有应用到它的操作转发到这个对象上。
 
-- 语法: const p = new Proxy(target, handler)
-	- target 要使用 Proxy 包装的目标对象(可以是任何类型的对象,包括原生数组,函数,甚至另一个代理)。
-	- handler 一个通常以函数作为属性的对象,各属性中的函数分别定义了在执行各种操作时代理 p 的行为。
+- 语法: `const p = new Proxy(target, handler)`
+	- target: 要使用 Proxy 包装的目标对象(可以是任何类型的对象,包括原生数组,函数,甚至另一个代理)。
+	- handler: 一个通常以函数作为属性的对象,各属性中的函数分别定义了在执行各种操作时代理 p 的行为。
+	- p: 代理对象
 
 ## 参数 handler对象 的方法
 
@@ -432,26 +432,26 @@ console.log ( Object.getOwnPropertyNames ( p ) ); // "called"; outputs [ 'a', 'b
 
 # 编码和解码
 
-- `encodeURIComponent(uriComponent)`; 函数通过将特定字符的每个实例替换成代表字符的 UTF-8 编码的一个、两个、三个或四个转义序列来编码 URI
-	- uriComponent: 一个 string、number、boolean、null,undefined 或者任何 object。编码之前,uriComponent 参数会转化为字符串。
-	- encodeURIComponent 转义除了如下所示外的所有字符:`A-Z a-z 0-9 - _ . ! ~ * ' ( )`
-	- 返回值: 原字串作为 URI 组成部分被被编码后的新字符串。
-- `decodeURIComponent(encodedURI)` 方法用于解码由 encodeURIComponent 方法或者其他类似方法编码的部分统一资源标识符(URI)。
-	- encodedURI: 编码后的部分 URI
-	- 返回值: 一个解码后的统一资源标识符(URI)字符串,处理前的 URI 经过了给定格式的编码。
-- `encodeURI(URI)`; 函数通过将特定字符的每个实例替换为一个、两个、三或四转义序列来对统一资源标识符 (URI) 进行编码。
+- `encodeURIComponent(URIComponent)`; 适用于编码 URI 中的单个组件（如查询参数、路径的一部分、哈希值等）。
+	- URIComponent: 一个 string 。若不是 string,则先转换为 string。
+	- 转义除了如下所示外的所有字符:`A-Z a-z 0-9 - _ . ! ~ * ' ( )`
+	- 返回值: 被编码后的新字符串。
+- `decodeURIComponent(URIComponent)` 解码 encodeURIComponent 转化的 URI
+	- URIComponent: encodeURIComponent 编码后的 URI
+	- 返回值: encodeURIComponent 编码之前的 URI。
+- `encodeURI(URI)`; 用于编码整个 URI（如协议、主机名、路径等）。保留 URI 结构。
 	- URI: 一个完整的 URI。
-	- encodeURI: 非替换字符: `; , / ? : @ & = + $ 字母 数字 - _ . ! ~ * ' ( ) #`
-	- 返回值:一个新字符串,表示提供的字符串编码为统一资源标识符 (URI)。
-- `decodeURI(encodedURI)` 函数能解码由encodeURI 创建或其他流程得到的统一资源标识符(URI)。
-	- encodedURI:  一个完整的编码过的 URI
-	- 返回值: 返回一个给定编码统一资源标识符 (URI) 的未编码版本的新字符串。
-- `atob(encodedData)` 对经过 base-64 编码的字符串进行解码。
-	- encodedData:经过 base-64 编码的字符串
-	- 返回值:经过 base-64 编码的字符解码的结果
+	- 只会编码那些在 URI 中无效的字符( `; , / ? : @ & = + $ 字母 数字 - _ . ! ~ * ' ( ) #`)。
+	- 返回值: 被编码后的新字符串。
+- `decodeURI(encodedURI)` 解码 encodeURI 编码的 URI
+	- encodedURI:  一个 decodeURI 编码过的 URI
+	- 返回值: 返回 encodeURI 编码之前的 URI。
 - `btoa(stringToEncode)` 方法可以将一个二进制字符串编码为 Base64 编码的 ASCII 字符串。
 	- stringToEncode: 一个需要编码的二进制字符串。
 	- 返回值: 一个包含 stringToEncode 的 Base64 表示的 ASCII 字符串。
+- `atob(encodedData)` 对经过 base-64 编码的字符串进行解码。
+	- encodedData:经过 base-64 编码的字符串
+	- 返回值:经过 base-64 编码的字符解码的结果
 
 
 # Reflect

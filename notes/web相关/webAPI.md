@@ -1,3 +1,29 @@
+## 窗口操作
+
+```js
+/**
+ * 打开新窗口
+ * @param {string} url 要加载的资源的 URL 或路径。如果指定空字符串或省略此参数，则会打开空白页。
+ * @param {string} target 指定加载资源的浏览上下文的名称。
+ * - 如果该名称无法识别现有的上下文，则会创建一个新的上下文，
+ * - 可以使用特殊的 target 关键字：
+ * - _self: 在当前窗口中加载资源(默认)
+ * - _blank: 在新的空白窗口中加载资源
+ * - _parent: 在父窗口中加载资源,如果没有父级框架，行为与 _self 相同。
+ * - _top: 在顶级窗口中加载资源,如果没有顶级框架，行为与 _self 相同。	
+ * @param {string} windowFeatures 字符串，包含以逗号分隔的窗口特性列表，形式为 name=value，布尔特性则仅为 name。
+ * - 该参数只有在打开新窗口时（比如 target="blank"）才会生效
+ * - popup: 启用最小弹出窗口。可以不指定值,或设为 yes/1/true
+ * - width/innerWidth: 内容区域宽度(含滚动条)。最小值为100
+ * - height/innerHeight: 内容区域高度(含滚动条)。最小值为100  
+ * - left/screenX: 距屏幕左侧的位置(像素)
+ * - top/screenY: 距屏幕顶部的位置(像素)
+ * - noopener: 设置后新窗口无法通过 Window.opener 访问原窗口
+ * - noreferrer: 省略 Referer 标头,并将 noopener 设为 true
+ * @returns {WindowProxy} 返回新窗口的引用。如果符合同源策略,可用于访问新窗口的属性和方法
+ */
+let windowObjectReference = window.open(strUrl, target,  windowFeatures);
+```
 
 ## Animation   动画
 

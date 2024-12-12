@@ -2,20 +2,10 @@
 
 ## 谷歌浏览器取消跨域限制
 
-```text
-  版本49之后
-  谷歌浏览器图标右键属性=>目标栏的地址改为下边内容, --前有空格
-  "C:...\chrome.exe" --disable-web-security --user-data-dir=C:\MyChromeDevUserData
-  版本49之前
-  --disable-web-security
-```
+谷歌浏览器图标右键属性=>目标栏的地址改为下边内容, --前有空格
 
-- `let windowObjectReference = window.open(strUrl, strWindowName, [strWindowFeatures]);`
-	- `windowObjectReference` 新窗口对象的引用。如果调用失败，返回值会是 null。如果父子窗口满足“同源策略”，你可以通过这个引用访问新窗口的属性或方法。
-	- `strUrl` 新窗口需要载入的 url 地址。strUrl可以是 web 上的 html 页面也可以是图片文件或者其他任何浏览器支持的文件格式
-	- `strWindowName` 新窗口的名称。该字符串可以用来作为超链接 <a> 或表单 <form> 元素的目标属性值
-	- `strWindowFeatures` 这个值列出了将要打开的窗口的一些特性 (窗口功能和工具栏) 。字符串中不能包含任何空白字符，特性之间用逗号分隔开
-		- `height=500,width=800,top=100,left=200` 相对于电脑屏幕的坐标偏移
+版本49之后:  "C:...\chrome.exe" --disable-web-security --user-data-dir=C:\MyChromeDevUserData
+版本49之前:  --disable-web-security
 
 ## 获取网页运行平台
 

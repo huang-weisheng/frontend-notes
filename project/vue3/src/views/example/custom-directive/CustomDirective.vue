@@ -54,7 +54,7 @@
 		<el-tag type="danger">
 			<h3>自定义指令</h3>
 		</el-tag>
-		<!-- v-random:指令名; max:指令参数; a,b:修饰符; {num: 1000}:指令值 -->
+		<!-- v-tip:指令名; important:指令参数; 红色,加粗:修饰符; {num: 1000}:指令值 -->
 		<input v-tip:[important].红色.加粗="{ text: '小提示' }" />
 	</fieldset>
 </template>

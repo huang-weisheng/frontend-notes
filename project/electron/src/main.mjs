@@ -1,6 +1,17 @@
 import {app,BrowserWindow,ipcMain,Menu,screen,session} from 'electron';
 import {createMainWindow} from './windows/main/main.mjs';
 
+// 读取安装时保存的配置
+function getServerUrl() {
+	try {
+		const configPath = path.join(process.resourcesPath, '../config.json');
+		const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+		return config.serverUrl;
+	} catch (err) {
+		return err;
+	}
+}
+
 // app 模块，它控制应用程序的事件生命周期。
 app.whenReady().then(async () => {
 	//获取主显示器的信息
@@ -14,6 +25,7 @@ app.whenReady().then(async () => {
 	const mainWindow=await createMainWindow(screenInfo);
 	//ipcMain.handle 定义渲染进程通过 ipcRenderer.invoke 发送消息时的处理函数及返回结果
 	ipcMain.handle('ping',() => 'pong');
+	ipcMain.handle('get-server-url',() => getServerUrl());
 	//监听渲染进程发送的消息
 	ipcMain.on('set-title',(event,title) => {
 		//获取发送消息的窗口并为其设置标题

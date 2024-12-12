@@ -23,9 +23,9 @@ export default defineConfig(({ command, mode }) => {
 				//返回true则将资源内联为 base64,否则不内联	
 				return content.byteLength < 0;
 			},
-			// rollup 中多次引入的局部注册组件会自动被提取成单独的文件
+			// rollup 中多处引入的局部注册组件会自动被提取成单独的文件
 			rollupOptions: {
-				// 自定义输出目录结构和分包,覆盖assetsDir属性
+				// 自定义输出目录结构和分包,优先级高于 assetsDir 属性
 				output: {
 					//规定入口文件的输出路径和命名格式。
 					entryFileNames: 'js/entry.[name].[hash].js',
@@ -34,9 +34,7 @@ export default defineConfig(({ command, mode }) => {
 					//自定义所有非 JS 文件的输出路径和命名规则。
 					assetFileNames: (assetInfo) => {
 						let extType: string = '';
-						if (assetInfo.name) {
-							extType = assetInfo.name.split('.').pop() || '';
-						}
+						extType = assetInfo.names[0].split('.').pop() || '';
 						if (extType === 'css') {
 							return 'css/[name].[hash][extname]';
 						}
@@ -46,12 +44,13 @@ export default defineConfig(({ command, mode }) => {
 						}
 						return 'assets/[name].[hash][extname]';
 					},
-					// 手动进行代码分包,返回的文件名为chunkFileNames字段的[name]
+					// 手动进行代码分包,返回的文件名为 chunkFileNames 字段的[name]
 					manualChunks(id) {
 						//id: 模块的绝对路径
 						if (id.includes('node_modules')) {
-							// 分包的文件名
+							// 分包的文件名,所有符合条件的模块会被打包到node_modules.js文件中
 							return 'node_modules';
+							// return id.split('/').pop()?.split('.').shift();
 						}
 
 					}

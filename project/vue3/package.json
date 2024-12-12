@@ -4,11 +4,17 @@
 	"version": "0.0.1",
 	"description": "",
 	"type": "module",
+	"scripts": {
+		"vue3:dev": "vite",
+		"vue3:build": "vite build",
+		"vue3:preview": "vite preview"
+	},
 	"dependencies": {
 		"@vueuse/core": "^12.0.0",
 		"axios": "^1.7.8",
 		"echarts": "^5.5.1",
 		"element-plus": "^2.8.8",
+		"pdf-lib": "^1.17.1",
 		"pinia": "^2.2.6",
 		"vue": "^3.5.13",
 		"vue-router": "^4.5.0"

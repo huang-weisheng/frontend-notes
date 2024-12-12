@@ -4,12 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "vue3:dev": "cd project/vue3/ && npx vite",
-    "vue3:build": "cd project/vue3 && npx vite build",
-    "vue3:preview": "cd project/vue3 && npx vite preview",
-    "electron:dev": "cd project/electron && nodemon --watch ./src --exec electron . --inspect=9999",
-    "electron:build": "cd project/electron &&npx electron-builder",
-    "node:server": "cd notes/docker/node && nodemon --watch . --ext mts --exec \"tsc --outDir dist && node dist/serve.mjs\""
   },
   "keywords": [],
   "author": "",

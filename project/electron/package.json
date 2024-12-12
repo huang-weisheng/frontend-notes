@@ -5,6 +5,10 @@
 	"description": "这是一个electron项目",
 	"main": "src/main.mjs",
 	"type": "module",
+	"scripts": {
+		"electron:dev": "nodemon --watch ./src --exec electron . --inspect=9999",
+		"electron:build": "electron-builder"
+	},
 	"devDependencies": {
 		"electron": "33.2.0",
 		"electron-builder": "^25.1.8"
@@ -13,8 +17,13 @@
 		"appId": "hyx.app.id",
 		"asar": false,
 		"win": {
-			"target": "portable",
+			"target": "nsis",
 			"icon": "src/assets/icon/shield.png"
+		},
+		"nsis": {
+			"include": "installer.nsh",
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
 		},
 		"files": [
 			"package.json",

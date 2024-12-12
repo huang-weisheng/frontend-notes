@@ -1,8 +1,8 @@
 <script setup lang="ts">
 	import { ElButton,ElTag } from 'element-plus';
-	import {provide,inject,ref,readonly} from 'vue';
+	import {provide,inject,ref} from 'vue';
 	import {globalProvideObjKey} from '@/types/provideInject.ts';
-	import {localProvide,LocalReadonlyProvide} from './provideKey.ts';
+	import {localProvide} from './provideKey.ts';
 	import InjectModule from './InjectModule.vue';
 
 	//接收(main.ts)在整个应用层面提供的依赖 ,若不要求必传可提供默认值(第二个参数)
@@ -24,13 +24,6 @@
 	//提供局部的注入依赖
 	provide(localProvide, LOCAL_PROVIDE.value);
 
-	const readonlyProvideObj=ref({
-		localProvideNum: 0,
-		update() {this.localProvideNum=Math.ceil(Math.random()*99)}
-	});
-
-	//使用 readonly 禁止注入方的组件更改注入数据
-	provide(LocalReadonlyProvide,readonly(readonlyProvideObj.value));
 </script>
 <template>
 	<fieldset>
