@@ -1,10 +1,10 @@
 <script setup lang="ts">
     import { ElMessage, ElButton, ElTag } from 'element-plus';
-    //引入静态资源目录public中的资源,引入一个静态资源会返回解析后的公共路径
-    import url from '/example/1.jpg';
-    //显示声明内联引入为base64
+    // 显示作为 url 引入
+    import url from './assets/wave.worklet.js?url';
+    //静态资源显式声明内联引入为base64
     import base64 from './assets/猫.jpg?inline';
-    //显示声明不内联引入    
+    //静态资源显示声明不内联引入base64,而是引入路径
     import nobase64 from './assets/猫.jpg?no-inline';
     //将资源作为文本引入
     import text from './assets/hello.md?raw';
@@ -14,17 +14,6 @@
     worker.onmessage = (e) => {
         ElMessage.success('从 Worker 收到消息:' + e.data.count);
     };
-    // 显示作为url导入 Paint Worklet
-    import workletUrl from './assets/wave.worklet.js?url';
-    declare global {
-        interface CSS {
-            paintWorklet: {
-                addModule(moduleURL: string): Promise<void>;
-            };
-        }
-    }
-    // 注册 Paint Worklet
-    (CSS as any).paintWorklet.addModule(workletUrl);
 </script>
 <template>
     <fieldset style="display: flex;align-items: center;">
@@ -39,9 +28,8 @@
         </el-button>
         <el-button type="primary" @click="ElMessage.success(url)">url</el-button>
         <el-button type="primary" @click="ElMessage.success(base64)">base64</el-button>
-        <el-button type="primary" @click="ElMessage.success(nobase64)">base642</el-button>
+        <el-button type="primary" @click="ElMessage.success(nobase64)">nobase64</el-button>
         <el-button type="primary" @click="ElMessage.success(text)">文本</el-button>
-        <div class="wave-demo">Houdini Paint Worklet</div>
     </fieldset>
 </template>
 <style>
@@ -49,15 +37,5 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: 100% 100%;
-    }
-
-    .wave-demo {
-        padding: 5px;
-        background-image: paint(wave-pattern);
-        --wave-color: red;
-        --wave-amplitude: 10;
-        --wave-frequency: 10;
-        border: 1px solid #f60000;
-        border-radius: 4px;
     }
 </style>

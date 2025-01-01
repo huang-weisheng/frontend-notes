@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { ref, type Directive } from 'vue';
-	import { ElTag, ElInput } from 'element-plus';
+	import { ElTag } from 'element-plus';
 
 	const important = ref('重要');
 

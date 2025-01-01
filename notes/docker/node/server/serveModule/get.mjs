@@ -2,15 +2,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 //获取当前模块的目录路径
-const root=path.resolve();
-/**
- * 发送404响应
- * @param res {http.ServerResponse} 响应对象
-*/
-function notfound(res) {
-	res.writeHead(404,{'Content-Type': 'text/plain;charset=utf-8'});
-	res.end('页面找不到');
-}
+const root = path.join(path.resolve(),'assets');
 /**
  * 处理GET请求
  * @param req {http.IncomingMessage} 请求对象
@@ -20,10 +12,10 @@ export function GET(req,res) {
 	//初始化模拟长时间请求的变量
 	let longRunningOperation;
 	if(req.url) {
-		let fileList=['/','html','css','js','josn'];
+		let assetsType=['/','html','css','js'];
 		let reqType=req.url.split('.').slice(-1)[0];
 		//如果是媒体类型为需要返回文件的类型
-		if(fileList.includes(reqType)) {
+		if(assetsType.includes(reqType)) {
 			//拼接文件的完整路径
 			let filePath=path.join(root,reqType==='/'? 'index.html':req.url);
 			// 获取文件状态
@@ -63,3 +55,12 @@ export function GET(req,res) {
 		}
 	});
 };
+
+/**
+ * 发送404响应
+ * @param res {http.ServerResponse} 响应对象
+*/
+function notfound(res) {
+	res.writeHead(404, { 'Content-Type': 'text/plain;charset=utf-8' });
+	res.end('页面找不到');
+}

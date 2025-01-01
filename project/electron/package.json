@@ -23,7 +23,8 @@
 		"nsis": {
 			"include": "installer.nsh",
 			"oneClick": false,
-			"allowToChangeInstallationDirectory": true
+			"allowToChangeInstallationDirectory": true,
+			"perMachine": true
 		},
 		"files": [
 			"package.json",

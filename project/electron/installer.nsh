@@ -3,33 +3,33 @@
 !include "nsDialogs.nsh"
 
 Var Dialog
-Var UrlLabel
-Var UrlText
-Var UrlValue
+Var InputBox
 
-# 定义自定义页面
-Page custom createUrlPage saveUrlPage
 
-# 创建输入页面
-Function createUrlPage
-  nsDialogs::Create 1018
-  Pop $Dialog
-  
-  ${NSD_CreateLabel} 0 0 100% 20u "请输入服务器地址:"
-  Pop $UrlLabel
-  
-  ${NSD_CreateText} 0 20u 100% 12u ""
-  Pop $UrlText
-  
-  nsDialogs::Show
+
+# 调整页面顺序，把自定义页面放在选择安装类型之后
+!insertmacro MUI_PAGE_WELCOME                    # 欢迎页面
+Page custom myCustomPage myCustomPageLeave       # 自定义页面
+
+# 创建页面
+Function myCustomPage
+    nsDialogs::Create 1018
+    Pop $Dialog
+
+    # 创建输入框 (x坐标, y坐标, 宽度, 高度, 默认文本)
+    ${NSD_CreateText} 10 10 200 12u "默认内容"
+    Pop $InputBox
+
+    nsDialogs::Show
 FunctionEnd
 
-# 保存用户输入
-Function saveUrlPage
-  ${NSD_GetText} $UrlText $UrlValue
-  
-  # 将URL保存到文件
-  FileOpen $4 "$INSTDIR\config.json" w
-  FileWrite $4 '{"serverUrl": "$UrlValue"}'
-  FileClose $4
+# 保存数据
+Function myCustomPageLeave
+    ${NSD_GetText} $InputBox $0  # $0 将存储输入的值
+    # 确保安装目录存在
+    CreateDirectory "$INSTDIR"
+    # 把值写入文件
+    FileOpen $4 "$INSTDIR\config.txt" w
+    FileWrite $4 "$0"
+    FileClose $4
 FunctionEnd

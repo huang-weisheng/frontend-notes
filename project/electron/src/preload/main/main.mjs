@@ -16,12 +16,11 @@ const setTitle=(title) => ipcRenderer.send('set-title',title)
 ipcRenderer.on('main',(_event,value) => {
 	console.log('收到 main 消息: ',value);
 });
-const getServerUrl=()=>ipcRenderer.invoke('get-server-url')
+
 // contextBridge.exposeInMainWorld 用于在渲染进程的全局上下文（即 window 对象）中安全地暴露某些功能或 API，
 contextBridge.exposeInMainWorld('electronAPI',{
 	ping,
 	setTitle,
-	getServerUrl
 });
 // 接收主进程发送的用于两个渲染进程通信的端口
 ipcRenderer.on('port',e => {

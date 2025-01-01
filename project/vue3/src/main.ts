@@ -1,10 +1,10 @@
 import App from '@/App.vue';
 import i18nPlugin from '@/plugins/i18n';
-import EInput from '@/components/global/ExtendedInput.vue';
+import HButton from '@/components/global/HButton.vue'
 import router from '@/router/router';
 import {globalProvideObjKey} from '@/types/provideInject';
 import {createPinia} from 'pinia';
-import {createApp,ref} from 'vue';
+import {createApp,h,ref} from 'vue';
 //引入全局样式
 import './styles/global.css';
 
@@ -22,7 +22,7 @@ app.use(i18nPlugin,{
 })
 
 //全局注册组件
-app.component('EButton', EInput);
+app.component('HButton', HButton);
 
 // 全局注册自定义指令
 app.directive('focus',{

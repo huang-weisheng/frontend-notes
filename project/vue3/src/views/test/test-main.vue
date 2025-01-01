@@ -86,15 +86,15 @@
 		const pdfDoc = await PDFDocument.load(pdfBytes);
 		const pages = pdfDoc.getPages();
 		const lastPage = pages[pages.length - 1];
-		
+
 		// 获取页面尺寸
 		const { width, height } = lastPage.getSize();
-		
+
 		// 添加签名图片到最后一页
 		const image = await pdfDoc.embedPng(signatureImageBytes);
 		const signatureWidth = 200;
 		const signatureHeight = 100;
-		
+
 		lastPage.drawImage(image, {
 			x: width - signatureWidth - 50, // 距离右边50单位
 			y: 50, // 距离底部50单位
@@ -114,14 +114,14 @@
 
 		try {
 			loading.value = true;
-			
+
 			// 读取文件
 			const pdfBuffer = await pdfFile.value.arrayBuffer();
 			const signatureBuffer = await getSignatureImage();
-			
+
 			// 添加签名
 			const signedPdfBytes = await addSignature(pdfBuffer, signatureBuffer);
-			
+
 			// 创建下载链接
 			const blob = new Blob([signedPdfBytes], { type: 'application/pdf' });
 			const url = URL.createObjectURL(blob);
@@ -129,7 +129,7 @@
 			link.href = url;
 			link.download = 'signed-document.pdf';
 			link.click();
-			
+
 			URL.revokeObjectURL(url);
 		} catch (error) {
 			console.error('签名过程出错:', error);
@@ -142,14 +142,14 @@
 <template>
 	<div class="pdf-signature">
 		<h1>PDF签名工具</h1>
-		
+
 		<div class="upload-section">
 			<div class="upload-item">
 				<label>选择PDF文件：</label>
 				<input type="file" accept=".pdf" @change="handlePdfUpload" />
 				<div class="file-name" v-if="pdfFile">已选择: {{ pdfFile.name }}</div>
 			</div>
-			
+
 			<div class="signature-canvas-container">
 				<label>手写签名：</label>
 				<canvas
@@ -158,90 +158,88 @@
 					@mousedown="startDrawing"
 					@mousemove="draw"
 					@mouseup="stopDrawing"
-					@mouseleave="stopDrawing"
-				></canvas>
+					@mouseleave="stopDrawing"></canvas>
 				<button class="clear-button" @click="clearCanvas">清除签名</button>
 			</div>
 		</div>
 
-		<button 
-			class="sign-button" 
-			@click="handleSign" 
-			:disabled="!pdfFile || loading"
-		>
+		<button
+			class="sign-button"
+			@click="handleSign"
+			:disabled="!pdfFile || loading">
 			{{ loading ? '处理中...' : '添加签名并下载' }}
 		</button>
 	</div>
 </template>
 
 <style scoped>
-.pdf-signature {
-	padding: 20px;
-	max-width: 600px;
-	margin: 0 auto;
-}
+	.pdf-signature {
+		padding: 20px;
+		max-width: 600px;
+		margin: 0 auto;
+	}
 
-.upload-section {
-	margin: 20px 0;
-}
+	.upload-section {
+		margin: 20px 0;
+	}
 
-.upload-item {
-	margin: 15px 0;
-}
+	.upload-item {
+		margin: 15px 0;
+	}
 
-.upload-item label {
-	display: block;
-	margin-bottom: 5px;
-	font-weight: bold;
-}
+	.upload-item label {
+		display: block;
+		margin-bottom: 5px;
+		font-weight: bold;
+	}
 
-.file-name {
-	margin-top: 5px;
-	font-size: 0.9em;
-	color: #666;
-}
+	.file-name {
+		margin-top: 5px;
+		font-size: 0.9em;
+		color: #666;
+	}
 
-.signature-canvas-container {
-	margin: 15px 0;
-}
+	.signature-canvas-container {
+		margin: 15px 0;
+	}
 
-.signature-canvas {
-	border: 1px solid #ccc;
-	background-color: #fff;
-	margin: 10px 0;
-	cursor: crosshair;
-}
+	.signature-canvas {
+		border: 1px solid #ccc;
+		background-color: #fff;
+		margin: 10px 0;
+		cursor: crosshair;
+	}
 
-.clear-button {
-	margin-top: 10px;
-	padding: 5px 10px;
-	background-color: #ff4444;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
+	.clear-button {
+		margin-top: 10px;
+		padding: 5px 10px;
+		background-color: #ff4444;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+	}
 
-.clear-button:hover {
-	background-color: #cc0000;
-}
+	.clear-button:hover {
+		background-color: #cc0000;
+	}
 
-.sign-button {
-	background-color: #4CAF50;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 16px;
-}
+	.sign-button {
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 16px;
+	}
 
-.sign-button:disabled {
-	background-color: #cccccc;
-	cursor: not-allowed;
-}
+	.sign-button:disabled {
+		background-color: #cccccc;
+		cursor: not-allowed;
+	}
 
-.sign-button:hover:not(:disabled) {
-	background-color: #45a049;
-}
+	.sign-button:hover:not(:disabled) {
+		background-color: #45a049;
+	}
 </style>

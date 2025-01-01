@@ -15,6 +15,7 @@
 	//响应式解构
 	const obj=ref({num: 10000});
 	const {num}=toRefs(obj.value);
+	console.log(num.value)
 	//获取当前组件实例
 	const instance=getCurrentInstance();
 

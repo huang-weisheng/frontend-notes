@@ -1,4 +1,4 @@
-## 窗口操作
+## open (打开窗口)
 
 ```js
 /**
@@ -124,7 +124,7 @@ IntersectionObserver 接口（从属于 Intersection Observer API）提供了一
 	ob.disconnect(el); //终止对所有目标元素可见性变化的观察。
 ```
 
-## ResizeObserver 监听元素内容或边框盒（即元素的大小）变化
+## ResizeObserver 监听元素尺寸变化
 
 ResizeObserver 接口监视 Element 内容盒或边框盒或者 SVGElement 边界尺寸的变化。
 ```js
@@ -145,32 +145,38 @@ resizeObserver.unobserve(element);
 
 ```
 
-## MutationObserver 监听DOM树中的变化
+## MutationObserver 监听DOM树变化
 
-比如节点的增删改，属性的修改，文本内容的修改等。
-
-语法: mutationObserver.observe(target[, options])
-- target: DOM 树中的一个要观察变化的 DOM Node (可能是一个 Element)，或者是被观察的子节点树的根节点。
-- options: 配置项描述了 DOM 的哪些变化应该报告给 MutationObserver 的 callback。
-	- childList、attributes 和 characterData 中，必须有一个参数为 true。
-	- subtree: 监听以target为根节点的整个子树。包括子树中所有节点的属性，不仅针对 target。默认为 false。
-	- childList: 当为 true 时，监听 target 节点中发生的节点的新增与删除（同时，如果 subtree 为 true，会针对整个子树生效）。默认值为 false。
-	- attributes: 当为 true 时观察所有监听的节点属性值的变化。默认值为 false,当声明了 attributeFilter 或 attributeOldValue，默认值则为 true
-	- attributeFilter: 一个用于声明哪些属性名会被监听的数组。如果不声明该属性，所有属性的变化都将触发通知。
-	- attributeOldValue: 指定是否在监视节点属性值的变化时记录旧属性。默认值为 false
-	- characterData: 指定是否观察文本节点（即 DOM 中的字符数据）的变化。默认值则为 false,如果指定characterDataOldValue,则默认为 true
-	- characterDataOldValue: 指定是否在监视到文本内容变化时记录旧的文本内容。默认值为 false
-
+监听节点的增删改，属性的修改，文本内容的修改等。
 
 ```js
+// 创建一个监听器实例
 const mutationObserver=new MutationObserver(mutations => {
 	mutations.forEach(mutation => {
 		console.log(mutation);
 	});
 });
 
-// 开始监听
-const config={attributes: true,childList: true,subtree: true};
+// 监听配置: childList、attributes 和 characterData 中，必须有一个参数为 true。
+const config={
+	//是否监听所有子节点。包括子树中所有节点的属性，默认为 false。
+	subtree: false,
+	// 是否监听节点的新增与删除。默认值为 false。
+	childList: false,
+	//是否监听节点属性值的变化。默认值为 false,当声明了 attributeFilter 或 attributeOldValue，默认为 true
+	attributes: true,
+	// 一个用于声明哪些属性名会被监听的数组。如果不声明该属性，所有属性的变化都将触发通知。
+	attributeFilter:[],
+	//指定是否在监视节点属性值的变化时记录旧属性。默认值为 false
+	attributeOldValue:false,
+	//指定是否监听文本节点的变化。默认值则为 false,如果指定characterDataOldValue,则默认为 true
+	characterData:false,
+	//指定是否在监视到文本内容变化时记录旧的文本内容。默认值为:false
+	characterDataOldValue: false
+
+};
+
+// 开始监听, target: 要观察的 DOM ，或者是被观察的子节点树的根节点
 mutationObserver.observe(targetNode,config);
 
 // 取消监听
@@ -188,7 +194,7 @@ myQuery.onchange = ()=>{
 }
  ```
 
-## requestAnimationFrame(重绘前回调)
+## requestAnimationFrame(下次重绘前回调)
 
 window.requestAnimationFrame()需要传入一个回调函数作为参数,该回调函数会在浏览器下一次重绘之前执行。
 

@@ -205,6 +205,20 @@ version: '3.8'
 
 services:
 
+  # MySQL 服务
+  mysql:
+    image: mysql:8.0 # 使用 MySQL 官方镜像
+    container_name: compose_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword" # 设置 MySQL root 用户密码
+      MYSQL_DATABASE: "exampledb" # 设置默认数据库
+      MYSQL_USER: "user" # 设置自定义用户
+      MYSQL_PASSWORD: "userpassword" # 自定义用户的密码
+    ports:
+      - "3306:3306" # 映射 MySQL 的端口
+    volumes:
+      - mysql_data:/var/lib/mysql # 使用卷存储 MySQL 数据
+
   # Node.js 应用服务
   node_app:
     image: node:v1.0 # 指定 Node.js 镜像名称和标签              
@@ -216,17 +230,9 @@ services:
     build: # 有 build 字段:根据 Dockerfile 构建新镜像;没有 build 字段:使用 image 字段指定的镜像
       context: node  # 使用node目录作为构建上下文
       dockerfile: Dockerfile # 指定 Dockerfile 路径,相对于context路径
-
-  # MySQL 服务
-  mysql_app:
-    image: mysql:latest  # 指定 MySQL 镜像名称和标签            
-    container_name: compose_mysql # 指定容器的名称       
-    ports: # 将主机端口映射到容器端口
-      - "3307:3306"                      
-    environment: # 设置环境变量
-      MYSQL_ROOT_PASSWORD: "000000"    # 设置 MySQL root 用户密码
-    volumes:
-      - mysql_data:/var/lib/mysql/  # 挂载主机目录到容器目录
+     depends_on: # 设置服务依赖
+      - mysql
+      
 # 定义卷
 volumes:
   mysql_data: # 定义名为 mysql_data 的卷

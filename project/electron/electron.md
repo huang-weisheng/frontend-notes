@@ -1,16 +1,14 @@
 # electron project 注意事项
 
 
-# electron build 配置
+# electron build 打包配置
 
 build.win.target 打包平台配置
     - nsis 为安装包
     - portable 为便携包
-    - appx 为appx包
-    - dmg 为dmg包
-    - mas 为mas包
-    - mas-x64 为mas-x64包
-    - mas-arm64 为mas-arm64包
+build.nsis.include 指定安装包配置文件
+build.nsis.oneClick 指定安装包是否一键安装
+build.nsis.allowToChangeInstallationDirectory 指定安装包是否允许更改安装目录
 
 
 files字段不声明则打包当前目录所有文件,

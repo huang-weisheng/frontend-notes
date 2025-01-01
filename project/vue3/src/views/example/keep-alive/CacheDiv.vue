@@ -1,6 +1,9 @@
 <script setup lang="ts">
 	import {onActivated,onDeactivated,ref} from 'vue';
 	import { ElMessage } from 'element-plus';
+	defineOptions({
+		name: 'divName',
+	});
 	let divContent=ref('可编辑DIV');
 
 	onActivated(() => {

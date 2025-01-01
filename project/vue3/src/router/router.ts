@@ -26,9 +26,11 @@ const router=createRouter({
 				}, 500);
 			})
 		};
-		//也可以直接返回一个对象
+		//也可以直接返回一个对象,
 		return {
+			// 跳转到的元素
 			el:'#app',
+			// 相对于该元素的偏移
 			left: 0,
 			top: 0,
 			behavior: 'smooth',

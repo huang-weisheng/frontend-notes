@@ -1,29 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>HTML Tree Viewer</title>
+	<title>事件冒泡测试</title>
 	<style>
-		.box{
-			width: 100px;
-			height: 100px;
-		}
-		.box1{
-			background-color: red;
-			border: 0px solid black;
-			padding: 0px;
-			overflow: scroll;
-		}
-		.box2{
-			background-color: blue;
-			margin-top: 50px;
-		}
 	</style>
 </head>
 <body>
-	<div class="box box1">
-		<div class="box box2"></div>
+	<span onclick="show()" style="margin: 50px;">展开</span>
+	<div class="box" id="parent">
+		<span>
+			asdasdasdas
+			ddddddddddddddddd
+			ddasdasdasdasda
+			sdasdddddddddddddddddddasdasd
+			asdasdasdasd
+			dddddddddddd
+			ddddddasdasdasdasda
+			sdasddddddddddd
+			ddddddddasdasdasdasda
+			sdasdddddddddddddddddddasdasd
+			asdasdasdas
+			dddddddddddddddddddasdasdasdas
+			dasdasddddddd
+			ddddddddddddasdasd
+			asdasdasdasdddddddd
+			dddddddddddasdasd
+		</span>
 	</div>
 	<script>
+		// 创建一个构造函数
+			function Person(name) {
+				this.name = name;
+			}
+
+			// 在原型链上添加一个属性
+			Person.prototype.age = 30;
+
+			// 创建一个 Person 实例
+			const person = new Person('Alice');
+			console.log(person)
+			// 添加一个自身的属性
+			person.gender = 'female';
+			Object.defineProperty(person,'name',{
+				enumerable:true,
+				get:()=>9999
+			})
+			// 使用 for...in 循环遍历 person 对象的所有属性（包括原型上的属性）
+			for (let key in person) {
+				console.log(key + ': ' + person[key]);
+			}
+
+			// 输出：
+			// name: Alice
+			// gender: female
+			// age: 30 (原型上的属性)
 
 	</script>
 </body>

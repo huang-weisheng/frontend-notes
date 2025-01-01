@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { useRouter, useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+	import {  onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 	onBeforeRouteLeave((to, from) => {
 		console.log('RouteA onBeforeRouteLeave');
 	});
@@ -8,18 +8,14 @@
 	});
 </script>
 <template>
-	<div>
-		<p
-			v-for="item in 15"
-			:key="item"
-			:id="'route-scroll-' + item"
-			class="scrollbar-demo-item">
-			A{{ item }}
+	<div class="scrollbar-container">
+		<p v-for="i in 10" :key="i" :id="'route-scroll-' + i">
+			A{{ i }}
 		</p>
 	</div>
 </template>
 <style scoped>
-	.scrollbar-demo-item {
+	.scrollbar-container > p  {
 		display: flex;
 		align-items: center;
 		justify-content: center;

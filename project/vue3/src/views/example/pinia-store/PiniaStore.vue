@@ -4,6 +4,7 @@
 	
 	//可访问store中所有(state , getters, actions 中)的数据 ✨
 	const store=useCounterStore();
+	
 	//访问store
 	function accessStore() {
 		store.count++;

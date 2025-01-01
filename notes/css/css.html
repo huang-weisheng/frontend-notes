@@ -3,25 +3,40 @@
 		/* 多行文本溢出显示省略号 */
 		.omit {
 			width: 250px;
+			height: 60px;
 			overflow: hidden;
 			line-height: 20px;
-			word-break: break-all;
 			border: 2px solid violet;
-			background-image: url(./assets/img/1.jpg);
-			color: #fff;
 		}
-		.content{
-			color: #fff;
-			mix-blend-mode: difference;
+
+		.omit::before {
+			content: "";
+			display: block;
+			height: 40px;
 		}
-		
+
+		.content {
+			margin-top: -40px;
+		}
+
+		.more {
+			float: right;
+			background: yellow;
+		}
 	</style>
 </head>
 <div class="omit">
-	<b class="more">... <a>展开</a></b>
-	<div class="content">
+	<b class="more" id="more">... 展开</b>
+	<div class="content" id="content">
 		his transformation is a shear mapping (transvection) distorts each point withinelement
 		byacertain angle inthe horizontal and vertical directions. The effect is as if you grabbed
 		each corner of the element and pulled them along a certain angle.The coordi
 	</div>
 </div>
+<script>
+	const content = document.getElementById('content')
+	console.log(content.clientHeight)
+	if(content.clientHeight<=60){
+		document.getElementById('more').remove()
+	}
+</script>
