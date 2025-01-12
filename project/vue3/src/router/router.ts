@@ -49,7 +49,10 @@ const router=createRouter({
 		},
 		exampleRoutes,
 		// 将匹配所有内容并将其放在 `route.params.pathMatch` 下
-		{ path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('@/views/error/404.vue') },
+		{ 
+			path: '/:pathMatch(.*)*', 
+			name: 'NotFound', 
+			component: () => import('@/views/error/404.vue') },
 	]
 });
 

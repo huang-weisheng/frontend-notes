@@ -5,6 +5,7 @@ import router from '@/router/router';
 import {globalProvideObjKey} from '@/types/provideInject';
 import {createPinia} from 'pinia';
 import {createApp,h,ref} from 'vue';
+
 //引入全局样式
 import './styles/global.css';
 
@@ -43,6 +44,15 @@ app.provide(globalProvideObjKey,{
 
 //将应用实例挂载到#app元素上, mount 方法应该始终在整个应用配置和资源注册完成后被调用。
 app.mount('#app');
+
+// 打印环境变量
+console.log('当前模式:', import.meta.env.MODE);
+console.log('是否开发环境:', import.meta.env.DEV);
+console.log('是否生产环境:', import.meta.env.PROD);
+console.log('基本公共路径:', import.meta.env.BASE_URL);
+console.log('.env 环境变量:', import.meta.env.VITE_ENV);
+console.log('.env[mode]] 环境变量:', import.meta.env.VITE_MODE);
+
 
 
 

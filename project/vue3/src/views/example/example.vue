@@ -50,23 +50,24 @@
 	import AsyncComponents from '@/views/example/async-components/AsyncComponents.vue';
 	import PathProcess from '@/views/example/assets-process/AssetsProcess.vue';
 	import { ElMessageBox, ElTag, ElButton, ElText } from 'element-plus';
+	
 	const ping = async () => {
 		if (window.electronAPI && window.electronAPI.ping) {
 			let data = await window.electronAPI.ping();
 			alert(data);
 		}
 	};
-	const setTitle = () => {
-		ElMessageBox.prompt('', 'Please input title', {
+
+	const setTitle = async () => {
+		const {value} = await ElMessageBox.prompt('', 'Please input title', {
 			confirmButtonText: 'OK',
 			cancelButtonText: 'Cancel',
 		})
-			.then(({ value }) => {
-				if (window.electronAPI && window.electronAPI.setTitle) {
-					window.electronAPI.setTitle(value);
-				}
-			});
+		if (window.electronAPI && window.electronAPI.setTitle) {
+			window.electronAPI.setTitle(value);
+		}
 	};
+	
 </script>
 <style scoped>
 	.example {

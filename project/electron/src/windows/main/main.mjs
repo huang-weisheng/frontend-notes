@@ -5,6 +5,7 @@ import path from 'path';
 import {ROOT_PATH} from '../../constants.mjs';
 import {createMoadalWindow} from '../modal/modal.mjs';
 import {loadUrl,logo} from '../../config.mjs';
+
 /**
  * app 模块 ready 事件之后创建窗口。
  * @param {Object} screenInfo 屏幕信息
@@ -20,10 +21,10 @@ export const createMainWindow=async (screenInfo) => {
 	 */
 	const mainWindow=new BrowserWindow({
 		//窗口大小和位置
-		x: Math.round((screenInfo.width - 1400) / 2),
-		y: Math.round((screenInfo.height - 700) / 2),
-		width: 1400,
-		height: 700,
+		x: Math.round((screenInfo.width - 1500) / 2),
+		y: Math.round((screenInfo.height - 760) / 2),
+		width: 1500,
+		height: 760,
 		//是否全屏
 		fullscreen: false,
 		//是否允许窗口拖动
@@ -31,7 +32,7 @@ export const createMainWindow=async (screenInfo) => {
 		// 是否允许用户拖动大小
 		resizable: true,
 		//设置应用背景色
-		backgroundColor: '#a4f79b',
+		backgroundColor: '#e8f5e9',
 		//窗口创建时是否显示。
 		show: true,
 		//是否显示系统标题栏

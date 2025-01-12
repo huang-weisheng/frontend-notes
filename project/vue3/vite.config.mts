@@ -7,7 +7,7 @@ export default defineConfig(({ command, mode }) => {
 	console.log('command', command);
 	console.log('mode', mode)
 	return {
-		mode: 'play',//指定项目运行的模式
+		mode: 'play',//指定项目运行的模式,对开发和生产环境都生效
 		base: '/web/',//公共基础路径。
 		publicDir: './public',//指定作为静态资源服务的文件夹	
 		//构建配置
@@ -60,7 +60,7 @@ export default defineConfig(({ command, mode }) => {
 		//esbuild配置
 		esbuild: {
 			//build模式下删除console和debugger
-			drop: command === 'build' ? ['console', 'debugger'] : []
+			// drop: command === 'build' ? ['console', 'debugger'] : []
 		},
 		//plugins 用于定义 Vite 的插件。
 		plugins: [

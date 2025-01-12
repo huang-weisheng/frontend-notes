@@ -5,9 +5,9 @@
 	"description": "",
 	"type": "module",
 	"scripts": {
-		"vue3:dev": "vite",
-		"vue3:build": "vite build",
-		"vue3:preview": "vite preview"
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
 	},
 	"dependencies": {
 		"@vueuse/core": "^12.0.0",
