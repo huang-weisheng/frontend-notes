@@ -42,7 +42,7 @@ const router=createRouter({
 			children: [
 				{
 					path: 'test',
-					component: () => import('@/views/test/test-main.vue')
+					component: () => import('@/views/test/index.vue')
 				}
 			],
 			redirect: '/example'

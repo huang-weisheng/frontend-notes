@@ -20,7 +20,7 @@
 		<el-select v-model="gift" placeholder="请选择礼物" clearable style="width: 300px;">
 			<el-option v-for="item in gifts" :key="item" :label="item" :value="item"></el-option>
 		</el-select>
-		<son-component :gift="gift" @sonInput="sonInput"></son-component>
+		<son-component :gift="gift" @sonInput="sonInput" a="1" @click="console.log('哈哈')"></son-component>
 	</fieldset>
 </template>
 <style scoped>

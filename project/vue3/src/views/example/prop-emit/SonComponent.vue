@@ -1,9 +1,15 @@
 <script setup lang="ts">
-	import {ElInput,ElTag} from 'element-plus';
-	import { ref } from 'vue';
+	import { ElInput, ElTag, ElButton } from 'element-plus';
+	import { ref, useAttrs } from 'vue';
+
+	// useAttrs 获取没有被显式接收的 props 和 emit; 等于 $attrs
+	const attrs = useAttrs();
+	const printAttrs = () => {
+		console.log(attrs);
+	};
 
 	// defineProps 会返回一个对象，其中包含了可以传递给组件的所有 props
-	const props=withDefaults(
+	const props = withDefaults(
 		defineProps<{
 			gift?: '苹果' | '香蕉' | '橘子' | '葡萄' | '梨' | '西瓜';
 		}>(),
@@ -25,7 +31,7 @@
 	// })
 
 	//defineEmits 声明事件,并为参数类型进行约束
-	const emit=defineEmits<{
+	const emit = defineEmits<{
 		sonInput: [value: string];
 	}>();
 
@@ -39,15 +45,16 @@
 
 	//使用声明的 emit 触发事件
 	const send = () => emit('sonInput', inputValue.value);
-	
-	const inputValue=ref('');
+
+	const inputValue = ref('');
 </script>
 
-<template>	
+<template>
 	<span>子组件:</span>
 	<el-tag style="margin:0 10px;">gift: {{ props.gift }}</el-tag>
 	<el-input @input="send" v-model="inputValue"></el-input>
+	<!-- 多根组件时须显式使用一个组件绑定 $attrs,否则会抛出警告  -->
+	<!-- v-bind 会绑定所有继承的属性和事件 -->
+	<el-button @click="printAttrs" v-bind="$attrs" type="primary">printAttrs</el-button>
 </template>
-<style>
-
-</style>
+<style></style>
