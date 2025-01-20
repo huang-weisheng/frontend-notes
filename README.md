@@ -36,11 +36,6 @@ npm update [ <package-name > ] --save  #更新依赖并保存到package.json,若
 	- 启用开发者模式(推荐,系统=>开发者选项=>开发人员模式)。
 	- 以管理员模式运行终端。
 
-- volta install(pin) xx@x.x.x.x卡住解决办法:
-	1. volta install(pin) xx@x.x.x.x --verbose 查看源下载地址
-	2. 手动下载文件放到缓存目录： ~\AppData\Local\Volta\tools\inventory\xx
-	3. 重新执行 volta install(pin) xx@x.x.x.x
-
 - 删除node,npm,yarn缓存安装包
 	- 目录:  ~\AppData\Local\Volta\tools\inventory\ 下对应目录
 	- inventory\node目录需保留image\node目录下对应版本的 node-vxx.x.x-npm 文件
@@ -59,8 +54,9 @@ npm update [ <package-name > ] --save  #更新依赖并保存到package.json,若
 	volta pin node@latest  #为项目指定node版本
 	volta pin npm@latest  #为项目指定npm版本
 	volta run --node latest --npm latest npm run test #指定版本运行命令
-		--node latest(可选) 指定node版本
-		--npm latest(可选) 指定npm版本
+		--node latest(可选) #指定node版本
+		--npm latest(可选) #指定npm版本
+		npm run test #要执行的命令
 	volta which 命令 #查看命令的文件路径
 ```
 

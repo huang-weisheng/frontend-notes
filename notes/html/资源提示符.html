@@ -7,16 +7,17 @@
 	<link rel="prefetch" href="demo.html">
 	<body>
 		async defer 只适用于外部脚本文件（使用 src 属性引入的脚本）
-		<script src="./index.js" async></script>
+		<script src="./test.js" async></script>
 		<!-- async --不会阻止DOM解析，会在下载完成后立即执行js文件。-->
-		<script src="./index.js" async></script>
+		<script src="./test.js" async></script>
 		<!-- defer 也不会阻止DOM解析，但是会在DOM解析完后才会执行，在DOMContentLoaded事件调用前执行。-->
-		<script src="./index.js" defer></script>
+		<script src="./test.js" defer></script>
 		<!--type为module时,默认为defer。-->
-		<script src="./index.js" type="module"></script>
+		<script src="./test.js" type="module"></script>
 		<script>
 			//通过脚本动态创建的script标签默认async属性为true
 			let script=document.createElement('script')
+			console.log(script.async)
 		</script>
 	</body>
 

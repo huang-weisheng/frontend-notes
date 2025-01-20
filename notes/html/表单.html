@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>表单</title>
@@ -49,6 +50,7 @@
 		}
 	</style>
 </head>
+
 <body>
 	<form action="/" method="post" enctype="multipart/form-data" onsubmit="submitForm(arguments)">
 		<p content="账号密码">
@@ -152,46 +154,44 @@
 		<input type="button" onclick="checkValidation()" value="checkValidation账号"></input>
 	</form>
 </body>
+
 </html>
 <script>
 	function submitForm(e) {
-		const event = e[0]
-		 //禁止默认提交刷新的事件
-		event.preventDefault()
-
-		const form = event.target
-		let formDataParams=new FormData(form);
-		let SearchParams=new URLSearchParams(formDataParams);
-		console.log(formDataParams);
-		console.log(SearchParams);
-		console.log(SearchParams.toString());
+		const event = e[0];
+		//禁止默认提交刷新的事件
+		event.preventDefault();
+		const form = event.target;
+		const formData = new FormData(form);
+		const SearchParams = new URLSearchParams(formData);
+		const URLEncodedData = SearchParams.toString();
 	}
 	function radioChange(radio) {
-		console.log(radio.value,radio.checked);
+		console.log(radio.value, radio.checked);
 	}
 	function checkboxChange(checkBox) {
-		console.log(checkBox.value,checkBox.checked);
+		console.log(checkBox.value, checkBox.checked);
 	}
 	function selectChange(select) {
-		let selects=[...select].map(i => ({value: i.value,selected: i.selected}));
+		let selects = [...select].map(i => ({ value: i.value, selected: i.selected }));
 		console.table(selects);
 	}
 
-	let checkDom=document.querySelector('input[name=username]');
+	let checkDom = document.querySelector('input[name=username]');
 	//对可提交元素有效性的检查是在提交父元素 <form> 之前或调用父元素 <form> 或元素自己的 checkValidity()或reportValidity() 方法之后
-	checkDom.addEventListener('invalid',(e) => {
+	checkDom.addEventListener('invalid', (e) => {
 		console.dir(e);
 	});
 
 	function checkValidation() {
 		/* 	表单验证规则: 当表单触发验证后,会在第一个未通过验证的元素的上弹出验证信息并使其获取焦点,此时该元素的input事件都触发这个元素验证,直至满足验证规则或失去焦点。*/
-		checkDom.oninput=() => {
+		checkDom.oninput = () => {
 			//将消息设置为空字符串至关重要。只要错误消息不为空，表单将不会通过验证，也不会提交。
 			checkDom.setCustomValidity('');
 
 			//input事件中再次验证有效性,覆盖原生的提示信息。验证时,没有自定义验证信息并不满足验证规则的情况下,将弹出系统原始验证信息。
 			//checkValidity()方法可以用来验证当前表单控件元素，或者整个表单是否验证通过，返回值是布尔值，true或者false。
-			if(!checkDom.checkValidity()) {
+			if (!checkDom.checkValidity()) {
 				checkDom.setCustomValidity('自定义验证提示:没通过验证');
 			}
 		};
@@ -207,8 +207,8 @@
 		/* tooShort	 只读。属性值为布尔类型。输入内容长度不足minlength的限制时候会是true。同时会匹配CSS :invalid和:out-of-range伪类。 */
 		/* typeMismatch	 只读。属性值为布尔类型。输入框的值和输入框类型不匹配的时候该属性值会是true。例如输入框type类型是email或者url时候。如果值是true，会匹配:invalid这个CSS伪类。 */
 		/* valueMissing	 只读。属性值为布尔类型。如果元素设置了required属性，同时输入框的值为空，则该属性值是true。如果值是true，会匹配:invalid这个CSS伪类。 */
-		let validityInfo=checkDom.validity;
-		if(!validityInfo.valid) {
+		let validityInfo = checkDom.validity;
+		if (!validityInfo.valid) {
 			//setCustomValidity() 方法设置指定的验证消息为选择元素的自定义验证消息。若不为空，表单将不会通过验证，也不会提交。
 			checkDom.setCustomValidity('自定义验证提示:没通过验证');
 		}

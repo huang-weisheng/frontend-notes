@@ -1,14 +1,11 @@
 {
   "name": "frontend-notes",
   "version": "1.0.0",
-  "description": "",
+  "description": "前端笔记",
   "main": "index.js",
   "scripts": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "hyx",
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "typescript": "^5.7.3"
+    "@types/node": "^22.9.0"
   }
 }

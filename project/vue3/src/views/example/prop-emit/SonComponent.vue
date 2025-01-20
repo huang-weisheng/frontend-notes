@@ -2,7 +2,7 @@
 	import { ElInput, ElTag, ElButton } from 'element-plus';
 	import { ref, useAttrs } from 'vue';
 
-	// useAttrs 获取没有被显式接收的 props 和 emit; 等于 $attrs
+	// useAttrs 获取没有被显式接收的 props 和 emits; 等于 $attrs
 	const attrs = useAttrs();
 	const printAttrs = () => {
 		console.log(attrs);
