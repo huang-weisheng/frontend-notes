@@ -1,20 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-	<title>事件冒泡测试</title>
-	<style>
-		div{
-			border: 2px solid red;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Map</title>
+	<script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 </head>
+
 <body>
-	<div style="display: flex;">
-		<div style="width: 100px;height: 100px;margin-left: auto;"></div>
-		<div style="width: 100px;height: 100px;margin-right: auto;"></div>
-	</div>
+	<div id="main" style="width: 100%; height: 600px;"></div>
 	<script>
-		// 获取树的最深节点有几层
+		function renderChart() {
+			var chartDom = document.getElementById('main');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			option = {
+				title: {
+					text: '中国地图',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				visualMap: {
+					min: 0,
+					max: 1000,
+					left: 'left',
+					top: 'bottom',
+					text: ['高', '低'],
+					calculable: true
+				},
+				series: [
+					{
+						name: '数据名称',
+						type: 'map',
+						mapType: 'china',
+						roam: false,
+						label: {
+							show: true
+						},
+						data: [
+							{ name: '北京', value: Math.round(Math.random() * 1000) },
+							{ name: '天津', value: Math.round(Math.random() * 1000) },
+							// ... 其他省份的数据 ...
+						]
+					}
+				]
+			};
+
+			option && myChart.setOption(option);
+		}
+
+		renderChart();
 	</script>
 </body>
+
 </html>

@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"name": "frontend-notes",
+			"path": "."
+		},
+		{
+			"name": "notes",
+			"path": "notes"
+		},
+		{
+			"name": "electron",
+			"path": "project/electron"
+		},
+		{
+			"name": "vue3",
+			"path": "project/vue3"
+		},
+		{
+			"name": "vue2",
+			"path": "project/vue2"
+		},
+		{
+			"path": "project/node"
+		}
+	],
+	"settings": {}
+}

@@ -32,6 +32,7 @@
 				<async-components />
 			</div>
 			<path-process />
+			<rare-syntax style="color:red" id="rareSyntax"/>
 		</fieldset>
 	</div>
 </template>
@@ -49,6 +50,7 @@
 	import PiniaStore from '@/views/example/pinia-store/PiniaStore.vue';
 	import AsyncComponents from '@/views/example/async-components/AsyncComponents.vue';
 	import PathProcess from '@/views/example/assets-process/AssetsProcess.vue';
+	import RareSyntax from '@/views/example/rare-syntax/RareSyntax.vue'
 	import { ElMessageBox, ElTag, ElButton, ElText } from 'element-plus';
 	
 	const ping = async () => {

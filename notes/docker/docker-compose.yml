@@ -22,7 +22,7 @@ services:
     container_name: compose_node # 指定容器的名称       
     ports:
       # 将主机端口映射到容器端口
-      - "678:88"
+      - "678:99"
     volumes:
       # 挂载主机目录到容器目录
       - ./node:/app/

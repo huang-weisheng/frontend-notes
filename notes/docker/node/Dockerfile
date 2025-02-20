@@ -6,7 +6,7 @@ FROM node
 RUN npm config set registry http://registry.npm.taobao.org
 
 # 声明容器运行时将要监听的端口,声明后客户端界面可配置映射端口。
-EXPOSE 88
+EXPOSE 99
 
 # WORKDIR: 指定工作目录，后续命令都会在该目录下执行。
 WORKDIR /home/app

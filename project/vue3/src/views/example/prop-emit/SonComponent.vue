@@ -4,11 +4,17 @@
 
 	// useAttrs 获取没有被显式接收的 props 和 emits; 等于 $attrs
 	const attrs = useAttrs();
-	const printAttrs = () => {
-		console.log(attrs);
-	};
+	const printAttrs = () => {	console.log(attrs);	};
 
 	// defineProps 会返回一个对象，其中包含了可以传递给组件的所有 props
+
+	// const props1 = defineProps(['foo', 'bar']);
+
+	// const props2 = defineProps({
+	// 	foo: { type: String, required: true },
+	// 	bar: Number
+	// });
+
 	const props = withDefaults(
 		defineProps<{
 			gift?: '苹果' | '香蕉' | '橘子' | '葡萄' | '梨' | '西瓜';
